@@ -1,0 +1,22 @@
+# Ignore OS and IDE files in any folder
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Ignore vendor and node_modules in any subfolder
+**/vendor/
+**/node_modules/
+
+# Ignore CI3 logs and cache across all apps
+**/application/logs/*
+**/application/cache/*
+!**/application/logs/index.html
+!**/application/cache/index.html
+
+# Ignore credentials in any app folder
+**/application/config/database.php
+.env
+
+*.zip
+# Also ignore large database dumps if you have them
+*.sql
