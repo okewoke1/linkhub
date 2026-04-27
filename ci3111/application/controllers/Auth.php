@@ -34,7 +34,7 @@ class Auth extends CI_Controller
             // --- Crucial Part: Fetch Roles and Store in Shared Session ---
             $user_roles = $this->User_model->get_user_roles($user->id);
             $id_penilai = $this->User_model->get_id_sispek($user->id);
-            
+
             // Login successful: Set shared session data
             $user_session_data = array(
                 'id' => $user->id,
@@ -90,10 +90,8 @@ class Auth extends CI_Controller
         } else {
             // Login failed: Set flashdata message for the login form
             $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Incorrect email or password!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                Email atau password salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>');
             redirect(base_url('auth/login'), 'refresh');
         }

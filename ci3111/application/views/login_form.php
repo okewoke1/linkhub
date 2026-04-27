@@ -83,7 +83,7 @@
                 $message = $this->session->flashdata('pesan');
             } elseif ($this->session->userdata('intended_url')) {
                 $message = '<div class="alert alert-info alert-dismissible fade show" role="alert">
-                            Please log in to access the requested resource.
+                            Login untuk mengakses sumber daya.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
             }

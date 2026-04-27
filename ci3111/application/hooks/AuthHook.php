@@ -84,6 +84,11 @@ class AuthHook
             $intended_url = current_url();
             $this->CI->session->set_userdata('intended_url', $intended_url);
 
+            // Kalau situs match dengan situs default hapus intended_url
+            if (strpos($intended_url, base_url()) === 0) {
+                $this->CI->session->unset_userdata('intended_url');
+            }
+
             // Redirect to the Linkhub's central login page.
             log_message('debug', 'User not logged in, redirecting to Linkhub login: ' . $linkhub_login_url);
             redirect($linkhub_login_url, 'refresh');
