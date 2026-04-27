@@ -69,8 +69,8 @@
               
               <th style="width:250px;text-align: center;vertical-align: middle">Nama Mitra / ID</th>
               <th style="width:80px;text-align: center;vertical-align: middle">Nilai Perjanjian</th>
-              <!--<th style="width:120px;vertical-align: middle">PPK</th>-->
               <th style="width:150px;text-align: center;vertical-align: middle">History Update</th>
+              <th style="width:150px;text-align: center;vertical-align: middle">Materai</th>
               <th style="width:180px;text-align: center;vertical-align: middle">Aksi</th>
             </tr>
           </thead>
@@ -91,7 +91,43 @@
                 <td style="text-align: right"><?php echo format_ribuan($row->total_perjanjian) ?></td>
                 <!--<td><?php echo $row->ppk; ?></td>-->
                 <td style="font-size: small;"><?php echo $row->log; ?></td>
-  
+                
+<td style="text-align:center;">
+<?php
+$level = $this->session->userdata('level');
+
+// kondisi boleh klik
+$bolehKlik = !($level == 2 && $row->materai == 1);
+?>
+
+
+<span class="badge 
+    <?php
+        if ($row->materai == 0) echo 'bg-danger';
+        elseif ($row->materai == 1) echo 'bg-warning';
+        else echo 'bg-success';
+    ?>
+    text-white btn-materai"
+    style="cursor:pointer"
+    data-no_spk="<?= $row->no_spk; ?>"
+    data-status="<?= $row->materai; ?>"
+    data-level="<?= $level; ?>">
+
+    <?php
+        if ($row->materai == 0) echo 'Belum Bermaterai';
+        elseif ($row->materai == 1) echo 'Bermaterai (Menunggu Admin)';
+        else echo 'Terkonfirmasi';
+    ?>
+</span>
+
+<br>
+<?= $row->pengusul; ?>
+</td>
+
+
+
+
+
                 <td>
                     <div class="row no-gutters">
                         <!-- Baris pertama -->

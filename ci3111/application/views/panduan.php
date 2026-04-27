@@ -4,6 +4,7 @@
     <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
         <h2><?= $title ?></h2>
+        <p><?= $desc ?></p>
     </div><!-- End Section Title -->
 
     <div class="container">

@@ -23,8 +23,8 @@ class Teknis extends MY_Controller
             );
         }
 
-        $data['title'] = 'Bukti Dukung SKP';
-        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
+        $data['title'] = 'Tautan Sosial';
+        $data['desc'] = 'Link menuju sumber daya digital Tim Sosial.';
         $data['tautan'] = $this->Tautan_model->get_tautan_teknis(2);
 
         $this->load->view('template/header');
@@ -47,8 +47,8 @@ class Teknis extends MY_Controller
             );
         }
 
-        $data['title'] = 'Bukti Dukung SKP';
-        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
+        $data['title'] = 'Tautan Produksi';
+        $data['desc'] = 'Link menuju sumber daya digital Tim Produksi.';
         $data['tautan'] = $this->Tautan_model->get_tautan_teknis(3);
 
         $this->load->view('template/header');
@@ -71,8 +71,8 @@ class Teknis extends MY_Controller
             );
         }
 
-        $data['title'] = 'Bukti Dukung SKP';
-        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
+        $data['title'] = 'Tautan Distribusi';
+        $data['desc'] = 'Link menuju sumber daya digital Tim Distribusi.';
         $data['tautan'] = $this->Tautan_model->get_tautan_teknis(4);
 
         $this->load->view('template/header');
@@ -95,8 +95,8 @@ class Teknis extends MY_Controller
             );
         }
 
-        $data['title'] = 'Bukti Dukung SKP';
-        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
+        $data['title'] = 'Tautan Neraca';
+        $data['desc'] = 'Link menuju sumber daya digital Tim Neraca.';
         $data['tautan'] = $this->Tautan_model->get_tautan_teknis(5);
 
         $this->load->view('template/header');
@@ -119,8 +119,8 @@ class Teknis extends MY_Controller
             );
         }
 
-        $data['title'] = 'Bukti Dukung SKP';
-        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
+        $data['title'] = 'Tautan IPDS';
+        $data['desc'] = 'Link menuju sumber daya digital Tim IPDS.';
         $data['tautan'] = $this->Tautan_model->get_tautan_teknis(6);
 
         $this->load->view('template/header');

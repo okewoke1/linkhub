@@ -1636,3 +1636,7 @@ td.wrap-column {
 	color: #94a3b8;
 }
 
+/* Mencegah scroll merembet ke parent/halaman utama */
+body {
+    overscroll-behavior: contain;
+}

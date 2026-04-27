@@ -13,6 +13,15 @@ class M_kontrak extends CI_Model
         $this->db->order_by('nama_mitra', 'ASC');
         return $this->db->get('t_mitra')->result(); // Kembalikan hasil
     }
+    // public function search_mitra($query, $tahun_kepka)
+    // {
+    //     $this->db->like('nama_mitra', $query);
+    //     $this->db->where('tahun_kepka', $tahun_kepka);
+    //     $this->db->order_by('nama_mitra', 'ASC');
+    
+    //     return $this->db->get('t_mitra')->result();
+    // }
+
 
     // FUNGSI LIST MITRA / TUGAS / PKK UNTUK MENGAMBIL LIST OPTION MENU
     public function list_mitra()
@@ -31,15 +40,18 @@ class M_kontrak extends CI_Model
     // public function get_data_tugas_by_kelompok_anggaran($kelompok_anggaran)
     // {
     //     $this->db->where('kelompok_anggaran', $kelompok_anggaran);
+    //     $this->db->order_by('id_tugas', 'DESC'); // Mengurutkan dari terbaru ke terlama
     //     $query = $this->db->get('t_tugas');
     //     return $query->result();
     // }
-    public function get_data_tugas_by_kelompok_anggaran($kelompok_anggaran)
+    
+    public function get_data_tugas_by_kelompok_anggaran($kelompok_anggaran, $tahun)
     {
         $this->db->where('kelompok_anggaran', $kelompok_anggaran);
-        $this->db->order_by('id_tugas', 'DESC'); // Mengurutkan dari terbaru ke terlama
-        $query = $this->db->get('t_tugas');
+        $this->db->where('tahun', $tahun);
+        $this->db->order_by('id_tugas', 'DESC');
     
+        $query = $this->db->get('t_tugas');
         return $query->result();
     }
 

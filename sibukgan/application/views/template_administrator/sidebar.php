@@ -7,9 +7,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon">
-                    <img src="<?php echo base_url() ?>assets/img/bps.png" style="width:60px; height:50px; color:#00B0F0;">
+                    <img src="<?php echo base_url(); ?>assets/img/bps.png" style="width:60px; height:50px;">
                 </div>
                 <div class="sidebar-brand-text mx-3">SIBUKGAN</div>
             </a>
@@ -19,111 +19,101 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo base_url('administrator/dashboard') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/dashboard'); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
 
-            <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-                Navigation
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
+            <div class="sidebar-heading">Navigation</div>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/pegawai') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/pegawai'); ?>">
                     <i class="fas fa-fw fa-user-alt"></i>
-                    <span>Data Pegawai</span></a>
+                    <span>Data Pegawai</span>
+                </a>
             </li>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
+            <!-- Collapse Menu - Buat Surat -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSurat"
+                    aria-expanded="false" aria-controls="collapseSurat">
                     <i class="fas fa-fw fa-file-alt"></i>
                     <span>Buat Surat</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
+                <div id="collapseSurat" class="collapse" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="<?php echo base_url('administrator/spt') ?>">Buat ST</a>
-                        <a class="collapse-item" href="<?php echo base_url('administrator/sppd') ?>">Buat ST 2 Orang</a>
-                        <!-- <a class="collapse-item" href="<?php echo base_url('administrator/spb') ?>">Buat ST 3 Orang</a> -->
-                      <a class="collapse-item" href="<?php echo base_url('administrator/sptmitra') ?>">Buat ST Mitra</a>
-                        
+                        <a class="collapse-item" href="<?php echo base_url('administrator/spt'); ?>">Buat ST</a>
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sppd'); ?>">Buat ST 2 Orang</a>
+                        <!-- <a class="collapse-item" href="<?php echo base_url('administrator/spb'); ?>">Buat ST 3 Orang</a> -->
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sptmitra'); ?>">Buat ST Mitra</a>
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sptmitralam'); ?>">Buat ST Mitra (Terlampir)</a>
                     </div>
                 </div>
             </li>
 
+            <!-- Collapse Menu - Buat Surat (PLH) -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePLH"
+                    aria-expanded="false" aria-controls="collapsePLH">
                     <i class="fas fa-fw fa-file-alt"></i>
                     <span>Buat Surat (PLH)</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div id="collapsePLH" class="collapse" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="<?php echo base_url('administrator/sptplh') ?>">Buat ST</a>
-                        <a class="collapse-item" href="<?php echo base_url('administrator/sptplh2') ?>">Buat ST 2 Orang</a>
-                      <a class="collapse-item" href="<?php echo base_url('administrator/sptmitra2') ?>">Buat ST Mitra</a>
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sptplh'); ?>">Buat ST</a>
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sptplh2'); ?>">Buat ST 2 Orang</a>
+                        <a class="collapse-item" href="<?php echo base_url('administrator/sptmitra2'); ?>">Buat ST Mitra</a>
                     </div>
                 </div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/spd') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/spd'); ?>">
                     <i class="fas fa-fw fa-archive"></i>
-                    <span>Daftar SPD</span></a>
+                    <span>Daftar SPD</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/laporan') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/laporan'); ?>">
                     <i class="fas fa-fw fa-archive"></i>
-                    <span>Daftar Laporan</span></a>
+                    <span>Daftar Laporan</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/laporan2')?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/laporan2'); ?>">
                     <i class="fas fa-fw fa-file-alt"></i>
-                    <span>Unggah Laporan</span></a>
+                    <span>Unggah Laporan</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/biaya') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/biaya'); ?>">
                     <i class="fas fa-fw fa-archive"></i>
-                    <span>Rincian Biaya</span></a>
+                    <span>Rincian Biaya</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url('administrator/edit') ?>">
+                <a class="nav-link" href="<?php echo base_url('administrator/edit'); ?>">
                     <i class="fas fa-fw fa-key"></i>
-                    <span>Edit Profile</span></a>
+                    <span>Edit Profile</span>
+                </a>
             </li>
 
-
-
-            <!-- Nav Item - Tables -->
-           
-
-            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
-            <!-- Sidebar Message -->
-            
-
         </ul>
         <!-- End of Sidebar -->
-
-        
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -139,61 +129,29 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-
-
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-            
-                        </li>
-
-
-
-                        
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-success small">Selamat datang, <?php echo $this->session->userdata('nama');?></span>
-                                <i class="fas fa-user "></i>
+                                <span class="mr-2 d-none d-lg-inline text-success small">
+                                    Selamat datang, <?php echo $this->session->userdata('nama'); ?>
+                                </span>
+                                <i class="fas fa-user"></i>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                                                <a class="dropdown-item" href="http://ci3111.dev.test/auth/logout">
+                                <a class="dropdown-item" href="https://dashboard.sekadau6109.com/auth/logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
+                            </div>
                         </li>
 
                     </ul>
 
                 </nav>
-               
+                <!-- End of Topbar -->

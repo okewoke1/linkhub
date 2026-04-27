@@ -44,10 +44,10 @@ class Spt extends CI_Controller
         $data['pegawai'] = $this->Spt_model->get_category();
         // $data['kode_seksi'] = $this->Spt_model->get_category();
     //   	$data['kd'] = $this->Spt_model->auto_code();
-      	$kd_array = $this->Spt_model->auto_code();
-         $kd2_array = $this->Spt_model->auto_code2();
-        $data['kd'] = $kd_array ? $kd_array[0]['no'] + 1 : 1;
-        $data['kd2'] = $kd2_array ? $kd2_array[0]['nomor_spd'] + 1 : 1;
+     // 	$kd_array = $this->Spt_model->auto_code();
+     //    $kd2_array = $this->Spt_model->auto_code2();
+      //  $data['kd'] = $kd_array ? $kd_array[0]['no'] + 1 : 1;
+     //   $data['kd2'] = $kd2_array ? $kd2_array[0]['nomor_spd'] + 1 : 1;
         $spt = $this->Spt_model;
         $validation = $this->form_validation;
         $validation->set_rules($spt->rules());

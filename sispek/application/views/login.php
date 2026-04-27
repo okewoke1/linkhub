@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
     <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <script src="assets/vendor/jquery/jquery.min.js"></script>
 
@@ -43,6 +44,17 @@
        
         
     </style>
+    <style>
+        .input-group-text-fixed {
+            width: 100px;           /* Sama untuk semua label */
+            justify-content: flex-start; /* Biar teks rata kiri */
+        }
+        
+        #modalEdit .modal-dialog {
+        margin-top: 100px;  /* Atur sesuai kebutuhan, contoh 100px */
+        }
+    </style>
+
 </head>
 
 <body>
@@ -71,25 +83,34 @@
 
                                     <form action="<?php echo site_url('login/auth'); ?>" method="post">
                                         <div class="form-group">
-                                            <!--<label for="username">Username:</label>-->
-                                            <input placeholder="Username" class="form-control form-control-user" type="text" name="username" id="username" required>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text input-group-text-fixed">NIP BPS</span>
+                                                </div>
+                                                <input type="text" class="form-control" name="username" placeholder="Username" required>
+                                            </div>
                                         </div>
+                                        
                                         <div class="form-group">
-                                            <!--<label for="password">Password:</label>-->
-                                            <input placeholder="Password" class="form-control form-control-user" type="password" name="password" id="password" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text input-group-text-fixed">Password</span>
+                                                </div>
+                                                <input type="password" class="form-control" name="password" placeholder="Password" required>
                                             </div>
                                         </div>
 
-                                        <input class="btn btn-primary btn-user btn-block" type="submit" value="Login">
-                                        <hr>
-
+                                    
+                                        <div class="form-group form-check">
+                                            <input class="form-check-input" type="checkbox" id="customCheck">
+                                            <label class="form-check-label" for="customCheck">Remember Me</label>
+                                        </div>
+                                    
+                                        <input type="submit" class="btn btn-primary btn-block" value="Login">
                                     </form>
+
+
+
                                     <div class="loading-spinner" id="loadingSpinner"></div>
                                 </div>
                             </div>

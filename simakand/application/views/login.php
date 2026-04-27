@@ -39,7 +39,7 @@
 					</span>
 					
 					<?php echo $this->session->flashdata('pesan') ?>
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+					<div class="wrap-input100">
 						<input class="input100" type="text" name="email">
                         <?php echo form_error('email', '<div class="text-danger small ml-3">','</div>') ?>
 						<span class="focus-input100"></span>
@@ -49,7 +49,7 @@
 					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
 						<input class="input100" type="password" name="password">
-                        <?php echo form_error('email', '<div class="text-danger small ml-3">','</div>') ?>
+                        <?php echo form_error('password', '<div class="text-danger small ml-3">','</div>') ?>
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
 					</div>

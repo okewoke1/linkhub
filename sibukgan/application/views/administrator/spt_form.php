@@ -40,7 +40,7 @@
       <div class="form-group col-md-1">
 			<label class="form-label" >Nomor</label>
 
-			<input type="text" name="no" id="no" class="form-control <?php echo form_error('no') ? 'is-invalid':'' ?> " value="<?php echo $kd ?>" readonly>
+			<input type="text" name="no" id="no" class="form-control <?php echo form_error('no') ? 'is-invalid':'' ?> " >
 			<div class="invalid-feedback">
 			</div>
     
@@ -51,7 +51,7 @@
 		<div class="form-group col-md-2">
 			<label class="form-label" >Nama Fungsi</label>
 			<select id="nomor" class="form-control <?php echo form_error('nomor') ? 'is-invalid':'' ?>" name="nomor">
-        <option>Choose...</option>
+        <option value="">Choose...</option>
         <option value="1">Umum</option>
 		<option value="2">Sosial</option>
 		<option value="3">Produksi</option>
@@ -67,7 +67,7 @@
 		<div class="form-group col-md-3">
       <label class="form-label">Kode Huruf</label>
       <select id="kode_huruf" class="form-control <?php echo form_error('kode_huruf') ? 'is-invalid':'' ?>" name="kode_huruf">
-        <option selected="0">Choose...</option>
+        <option value="">Choose...</option>
         <option value="SS.220">Pelatihan Petugas Sensus</option>
 		<option value="SS.310">Listing Sensus</option>
 		<option value="SS.330">Pengumpulan Data Sensus</option>
@@ -160,6 +160,14 @@
 			</div>
 		</div>
 		
+			<div class="form-group col-md-6">
+			<label class="form-label">Pembebanan</label>
+			<input type="text" name="kode_anggaran" class="form-control <?php echo form_error('kode_anggaran') ? 'is-invalid':'' ?> " >
+			<div class="invalid-feedback">
+			<?php echo form_error('kode_anggaran') ?>
+			</div>
+		</div>
+		
 
 		<div class="form-group col-md-2"  id="drop-down" name="drop-down">
       <label class="form-label" for="status_spd">Aktifkan SPD</label>
@@ -172,7 +180,7 @@
 <div class="form-group col-md-2" name="hidden-panel" id="hidden-panel">
 
     <label class="form-label" for="nomor_spd">Nomor SPD</label>
-    <input type="number" name="nomor_spd" class="form-control " id="nomor_spd" value="<?php echo $kd2 ?>" readonly>
+    <input type="number" name="nomor_spd" class="form-control " id="nomor_spd">
 <br>
 	<select id="jenis_transport" class="form-control" name="jenis_transport">
 	<option>Choose...</option>
@@ -202,20 +210,24 @@
 <div class="form-group col-md-6">
 		<input class="btn btn-success" type="submit" name="btn" value="Save" />
 </div>
-<script type="text/javascript">
+<script>
 function showHide() {
-    var status_spd = document.getElementById("status_spd").value;
-    var nomor_spd_input = document.getElementById("nomor_spd");
+    var statusSpd = document.getElementById("status_spd").value;
+    var hiddenPanel = document.getElementById("hidden-panel");
 
-    if (status_spd == 2) {
-        nomor_spd_input.value = "0"; // Set the value to the existing value
-        nomor_spd_input.readOnly = true; // Make the input readonly
+    if (statusSpd === "1") {
+        hiddenPanel.style.display = "block";
     } else {
-        nomor_spd_input.value = "<?php echo $kd2 ?>"; // Increment the value
-        nomor_spd_input.readOnly = false; // Make the input editable
+        hiddenPanel.style.display = "none";
     }
 }
+
+// Jalankan saat halaman dibuka (untuk set awal)
+window.onload = function() {
+    showHide();
+};
 </script>
+
 
 	</form>
 

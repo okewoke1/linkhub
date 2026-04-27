@@ -33,8 +33,10 @@
                     </div>
                 </div><!-- End Member -->
             <?php endforeach; ?>
-
-            <iframe src="<?= $item->url_ckp_bulanan ?>" width="100%" height="500px"></iframe>
+            
+            <div class="sheet-container">
+                <iframe src="<?= $item->url_ckp_bulanan ?>" style="width:100%; height:1000px;"></iframe>
+            </div> 
 
         </div>
 

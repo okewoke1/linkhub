@@ -6,7 +6,7 @@ class M_login extends CI_Model
 
     public function check_user($username, $password)
     {
-        $this->db->where('username', $username);
+        $this->db->where('nip_bps', $username);
         $this->db->where('password', md5($password));  // Pastikan untuk menggunakan hashing yang aman
         $query = $this->db->get('t_user');
 

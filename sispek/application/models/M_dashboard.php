@@ -14,6 +14,17 @@ class M_dashboard extends CI_Model
         return $query->row()->total_perjanjian;
     }
     
+    // public function get_total_perjanjian($start_date, $end_date)
+    // {
+    //     $this->db->select('SUM(total_perjanjian) AS total');
+    //     $this->db->from('t_spk');
+    //     $this->db->where('tanggal_spk >=', $start_date);
+    //     $this->db->where('tanggal_spk <=', $end_date);
+    
+    //     $query = $this->db->get()->row();
+    //     return $query ? $query->total : 0;
+    // }
+
     public function get_total_perjanjian_tahun($year)
     {
         // Hitung tanggal awal dan akhir tahun
@@ -60,6 +71,38 @@ class M_dashboard extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    
+    // public function get_all_spk()
+    // {
+    //     $currentMonth = date('m');
+    //     $currentYear  = date('Y');
+    
+    //     $this->db->select('
+    //         t_spk.*,
+    //         t_mitra.nama_mitra,
+    //         t_mitra.id_mitra,
+    //         t_ppk.*,
+    //         (SELECT SUM(nilai_perjanjian)
+    //          FROM t_spkrinci 
+    //          WHERE t_spkrinci.no_spk = t_spk.no_spk) as total_rinci
+    //     ');
+    //     $this->db->from('t_spk');
+    
+    //     $this->db->join(
+    //         't_mitra',
+    //         't_spk.id_sobat = t_mitra.id_sobat 
+    //          AND YEAR(t_spk.tanggal_spk) = t_mitra.tahun_kepka',
+    //         'left'
+    //     );
+    
+    //     $this->db->join('t_ppk', 't_spk.nip_ppk = t_ppk.nip', 'left');
+    //     $this->db->where('MONTH(t_spk.tanggal_spk)', $currentMonth);
+    //     $this->db->where('YEAR(t_spk.tanggal_spk)', $currentYear);
+    //     $this->db->order_by('total_rinci', 'DESC');
+    
+    //     return $this->db->get()->result();
+    // }
+
 
     public function get_all_spk_bulan_sebelumnya()
     {
@@ -80,6 +123,50 @@ class M_dashboard extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    
+    // public function get_all_spk_bulan_sebelumnya()
+    // {
+    //     $previousMonth = date('m', strtotime('first day of last month'));
+    //     $previousYear  = date('Y', strtotime('first day of last month'));
+    
+    //     $this->db->select("
+    //         t_spk.*,
+    //         t_mitra.nama_mitra,
+    //         t_mitra.id_mitra,
+    //         t_ppk.*,
+    //         (
+    //             SELECT SUM(nilai_perjanjian)
+    //             FROM t_spkrinci
+    //             WHERE t_spkrinci.no_spk = t_spk.no_spk
+    //         ) AS total_rinci
+    //     ", false); // false = supaya subquery tidak di-escape
+    
+    //     $this->db->from('t_spk');
+    
+    //     // ? JOIN MITRA PALING AMAN
+    //     $this->db->join(
+    //         't_mitra',
+    //         "t_spk.id_sobat = t_mitra.id_sobat
+    //          AND t_mitra.tahun_kepka = (
+    //              SELECT MAX(tm.tahun_kepka)
+    //              FROM t_mitra tm
+    //              WHERE tm.id_sobat = t_spk.id_sobat
+    //          )",
+    //         'left',
+    //         false
+    //     );
+    
+    //     $this->db->join('t_ppk', 't_spk.nip_ppk = t_ppk.nip', 'left');
+    
+    //     $this->db->where('MONTH(t_spk.tanggal_spk)', $previousMonth);
+    //     $this->db->where('YEAR(t_spk.tanggal_spk)', $previousYear);
+    
+    //     $this->db->order_by('total_rinci', 'DESC');
+    
+    //     return $this->db->get()->result();
+    // }
+
+
     
     public function get_all_spk_tahun_ini($year)
     {
@@ -146,4 +233,32 @@ class M_dashboard extends CI_Model
 
         return $spk_data;
     }
+    
+public function count_materai_bulan_ini_detail()
+{
+    return $this->db->query("
+        SELECT
+            SUM(CASE WHEN materai = 0 THEN 1 ELSE 0 END) AS belum,
+            SUM(CASE WHEN materai = 1 THEN 1 ELSE 0 END) AS menunggu,
+            SUM(CASE WHEN materai = 2 THEN 1 ELSE 0 END) AS terkonfirmasi
+        FROM t_spk
+        WHERE MONTH(tanggal_spk) = MONTH(CURDATE())
+          AND YEAR(tanggal_spk) = YEAR(CURDATE())
+    ")->row();
+}
+
+public function count_materai_bulan_lalu_detail()
+{
+    return $this->db->query("
+        SELECT
+            SUM(CASE WHEN materai = 0 THEN 1 ELSE 0 END) AS belum,
+            SUM(CASE WHEN materai = 1 THEN 1 ELSE 0 END) AS menunggu,
+            SUM(CASE WHEN materai = 2 THEN 1 ELSE 0 END) AS terkonfirmasi
+        FROM t_spk
+        WHERE MONTH(tanggal_spk) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+          AND YEAR(tanggal_spk)  = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+    ")->row();
+}
+
+
 }

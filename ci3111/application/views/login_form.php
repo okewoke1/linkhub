@@ -19,7 +19,7 @@
         }
 
         .hero-bg {
-            background: url("<?= base_url('assets/img/hero-bg.jpg') ?>") top center no-repeat;
+            background: url("<?= base_url('assets/img/kantor.jpg') ?>") top center no-repeat;
             background-size: cover;
             position: relative;
             height: 100%;

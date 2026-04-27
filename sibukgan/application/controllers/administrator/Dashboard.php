@@ -15,18 +15,27 @@ class Dashboard extends CI_Controller{
 			redirect('login'); 
 		}
 	}
-	public function index()
-	{
-		$data = $this->User_model->ambil_data($this->session->userdata ['email']);
-		$data = array( 
-				'email' => $data->email, 
-	);
-		$data['hasil']=$this->Dashboard_modeladmin->Jum_spt();
-		$data['nama']=$this->Dashboard_modeladmin->Nam_peg();
-		
-		$this->load->view('template_administrator/header');
-		$this->load->view('template_administrator/sidebar', $data);
-		$this->load->view('administrator/dashboard', $data);
-		$this->load->view('template_administrator/footer');
-	}
+public function index()
+{
+    $user = $this->User_model->ambil_data($this->session->userdata('email'));
+
+    $bulan = $this->input->get('bulan') ?? date('m');
+    $tahun = $this->input->get('tahun') ?? date('Y');
+
+
+    $data = array(
+        'email' => $user->email,
+        'hasil' => $this->Dashboard_modeladmin->Jum_spt(),
+        'nama' => $this->Dashboard_modeladmin->Nam_peg(),
+        'monitoring' => $this->Dashboard_modeladmin->getMonitoringTugas($bulan, $tahun),
+        'bulan' => $bulan,
+        'tahun' => $tahun
+    );
+
+    $this->load->view('template_administrator/header');
+    $this->load->view('template_administrator/sidebar', $data);
+    $this->load->view('administrator/dashboard', $data); // DI SINILAH MONITORING DITAMPILKAN
+    $this->load->view('template_administrator/footer');
+}
+
 }

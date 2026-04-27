@@ -20,3 +20,5 @@ Thumbs.db
 *.zip
 # Also ignore large database dumps if you have them
 *.sql
+
+*.bak

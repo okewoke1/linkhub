@@ -49,10 +49,15 @@ class user extends CI_Controller
 
         $user = $this->input->post('username');
         $password = $this->input->post('password');
+        $pw_md5 = md5($password);
         $level = $this->input->post('level');
         $is_active = $this->input->post('is_active');
-        $pw_md5 = md5($password);
-
+        $nip = $this->input->post('nip');
+        $nip_bps = $this->input->post('nip_bps');
+        $email = $this->input->post('email');
+        
+        // $foto = $this->input->post('foto');
+ 
         // Cek apakah data sudah ada di database
         $existing_user = $this->M_user->cek_user($user);
 
@@ -75,6 +80,10 @@ class user extends CI_Controller
                 'password' => $pw_md5,
                 'level' => $level,
                 'is_active' => $is_active,
+                'nip' => $nip,
+                'nip_bps' => $nip_bps,
+                'email' => $email,
+                // 'foto' => $foto,
             );
 
             // Masukkan data ke dalam database
@@ -95,7 +104,7 @@ class user extends CI_Controller
     public function hapus($id)
     {
         $data = array('id' => $id);
-        $this->M_user->hapus_data($data, "master_users");
+        $this->M_user->hapus_data($data, "t_user");
         redirect('user/index');
     }
 
@@ -106,12 +115,19 @@ class user extends CI_Controller
         $username = $this->input->post('username');
         $level = $this->input->post('level');
         $is_active = $this->input->post('is_active');
+        $nip = $this->input->post('nip');
+        $nip_bps = $this->input->post('nip_bps');
+        $email = $this->input->post('email');
 
         // Data baru yang akan diupdate
         $data = array(
             'username' => $username,
             'level' => $level,
             'is_active' => $is_active,
+            'nip' => $nip,
+            'nip_bps' => $nip_bps,
+            'email' => $email,
+            // 'foto' => $foto,
         );
 
         // Kondisi untuk menemukan data yang akan diupdate

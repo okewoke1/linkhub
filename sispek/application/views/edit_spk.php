@@ -129,14 +129,14 @@
                         <table id="tampil_data" class="table table-bordered table-hover" style="width:100%;">
                             <thead class="thead-dark" style="vertical-align: middle;text-align: center;">
                                 <tr>
-                                    <th style="width:50px">No</th>
-                                    <th style="width:300px">Jabatan</th>
-                                    <th style="width:450px;">Uraian Kegiatan</th>
+                                    <th style="width:260px">No SPK</th>
+                                    <!--<th style="width:300px">Jabatan</th>-->
+                                    <th style="width:900px;">Uraian Kegiatan</th>
                                     <th style="width:150px">Satuan</th>
-                                    <th style="width:200px">Honor</th>
-                                    <th style="width:120px">Qty</th>
-                                    <th style="width:200px">Jumlah</th>
-                                    <th colspan="2">AKSI</th>
+                                    <th style="width:140px">Honor</th>
+                                    <th style="width:120px">Jumlah</th>
+                                    <th style="width:160px">Jumlah</th>
+                                    <th style="width:20px"colspan="2">AKSI</th>
                                 </tr>
                             </thead>
                             <tbody id="">

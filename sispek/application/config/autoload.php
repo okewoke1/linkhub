@@ -134,10 +134,10 @@ $autoload['language'] = array();
 |	$autoload['model'] = array('first_model' => 'first');
 */
 $autoload['model'] = array(
-    'M_mitra',
-    'Data_kegiatan',
-    'M_kontrak',
-    'M_anggaran',
+    'M_mitra', 
+    'Data_kegiatan', 
+    'M_kontrak', 
+    'M_anggaran', 
     'M_daftarspk',
     'M_ppk',
     'M_login',
@@ -146,4 +146,7 @@ $autoload['model'] = array(
     'M_daftarkegiatan',
     'M_daftarbast',
     'M_datamitra',
+    'M_penilaian',
+    'M_sk',
+    'M_sk_petugas'
 );

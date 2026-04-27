@@ -30,6 +30,9 @@ class Login extends CI_Controller
         if ($user) {
             if ($user->is_active) {
                 $session_data = array(
+                    'id' => $user->id, 
+                    'nip' => $user->nip, 
+                    'nip_bps' => $user->nip_bps, 
                     'username' => $user->username,
                     'level' => $user->level,
                     'is_logged_in' => TRUE

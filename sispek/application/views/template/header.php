@@ -44,6 +44,49 @@
     white-space: nowrap; /* Mencegah pemisahan label */
 }
 </style>
+<style>
+/* Styling slider tanpa bulatan, dengan bar berwarna terisi */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: linear-gradient(to right, #007bff 50%, #e0e0e0 50%);
+  height: 8px;
+  border-radius: 4px;
+  outline: none;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+/* Update background fill on input */
+input[type=range]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Hilangkan bulatan pada Chrome, Safari, Edge */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  cursor: pointer;
+  margin-top: 0;
+  box-shadow: none;
+}
+
+/* Hilangkan bulatan pada Firefox */
+input[type=range]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: none;
+}
+</style>
+
+
+
 
  
 

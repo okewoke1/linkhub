@@ -106,50 +106,119 @@
 
 <script>
         $(document).ready(function() {
+            
+            $.fn.dataTable.ext.type.order['doc-pre'] = function (data) {
+                if (!data) return 0;
+        
+                data = $('<div>').html(data).text().trim();
+        
+                var match = data.match(/^(\d{4})\/.+\/(SPK|BAST)\/(\d{1,2})\/(\d{4})$/);
+                if (!match) return 0;
+        
+                var nomor = parseInt(match[1], 10);
+                var bulan = parseInt(match[3], 10);
+                var tahun = parseInt(match[4], 10);
+        
+                return (tahun * 1000000) + (bulan * 10000) + nomor;
+            };
+            
             $('#table_dashboard1').DataTable();  
             $('#table_dashboard2').DataTable();  
             $('#table_dashboard3').DataTable();  
             $('#tabel_bast').DataTable(); 
+            
+            $('#tabel_kegiatan').DataTable({
+                order: [[4, 'desc']]
+            });
+
+            
+            $('#tabel_penilaian').DataTable({
+                "pageLength": 20,
+                "lengthMenu": [[20, -1], [20, "All"]]
+            });
+            
+            $('#table_rekap_penilaian').DataTable({
+                "pageLength": 20,
+                "lengthMenu": [[20, -1], [20, "All"]]
+            });
+
+            $('#tabel_user').DataTable({
+              "columnDefs": [
+                {
+                  "searchable": false,
+                  "orderable": false,
+                  "targets": 0 // Kolom ke-0 (nomor urut)
+                }
+              ],
+              "order": [[1, 'asc']], // default sorting kolom kedua
+              "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $('td:eq(0)', nRow).html(iDisplayIndex + 1); // isi kolom ke-0 dengan nomor urut
+                return nRow;
+              }
+            });
         });
 
 </script>
 
 
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
+
+    $.fn.dataTable.ext.type.order['spk-pre'] = function (data) {
+        if (!data) return 0;
+
+        data = $('<div>').html(data).text().trim();
+
+        var nums = data.match(/\d+/g);
+        if (!nums || nums.length < 3) return 0;
+
+        var nomor = parseInt(nums[0], 10);
+        var bulan = parseInt(nums[nums.length - 2], 10);
+        var tahun = parseInt(nums[nums.length - 1], 10);
+
+        return (tahun * 1000000) + (bulan * 10000) + nomor;
+    };
+
     $('#tabel_spk').DataTable({
-        dom: 'Blfrtip', // B: Buttons, l: Length Menu, f: Filter, r: Processing, t: Table, p: Pagination
-        // dom: '<"row"<"col-sm-1"B><"col-sm-9"l><"col-sm-2"f>>' + // Menempatkan tombol, menu panjang, dan filter dalam satu baris
-        //      't' + // Tabel
-        //     //  '<"row"<"col-sm-12"p>>', 
-        //     'p',
-        //      // Pagination di bawah tabel
+        dom: 'Blfrtip',
+
         buttons: [
             {
                 extend: 'excelHtml5',
-                text: 'Excel', // Teks tombol
-                title: 'Data Export', // Judul file Excel
-                exportOptions: {
-                    columns: ':visible' // Ekspor hanya kolom yang terlihat
-                }
+                text: 'Excel',
+                title: 'Data Export',
+                exportOptions: { columns: ':visible' }
             },
             {
                 extend: 'pdfHtml5',
-                text: 'PDF', // Teks tombol
-                title: 'Data Export', // Judul file PDF
-                orientation: 'landscape', // Orientasi halaman PDF
+                text: 'PDF',
+                title: 'Data Export',
+                orientation: 'landscape',
                 pageSize: 'A4',
-                exportOptions: {
-                    columns: ':visible' // Ekspor hanya kolom yang terlihat
-                },
-                customize: function(doc) {
-                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split(''); // Mengatur lebar tabel otomatis
+                exportOptions: { columns: ':visible' },
+                customize: function (doc) {
+                    doc.content[1].table.widths =
+                        Array(doc.content[1].table.body[0].length + 1)
+                        .join('*')
+                        .split('');
                 }
             }
         ],
-        
-        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]], // Opsi jumlah baris per halaman
-        pageLength: 10 // Jumlah baris default pada halaman pertama
+
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        pageLength: 10,
+
+        columnDefs: [
+            {
+                targets: 1,       // kolom NO SPK
+                type: 'spk'
+            }
+        ],
+
+        order: [
+            [0, 'desc'], // tanggal (YYYY-MM-DD)
+            [1, 'desc']  // nomor SPK (FIX)
+        ]
     });
 });
 </script>
@@ -200,7 +269,7 @@ $(document).ready(function() {
 
             // Format rincian tugas dalam bentuk tabel
             details += '<table class="table">';
-            details += '<thead><tr><th>No</th><th>Uraian Tugas</th><th>Volume</th><th>Satuan</th><th>Nilai Perjanjian</th></tr></thead>';
+            details += '<thead><tr><th>No</th><th>Uraian Tugas</th><th>Volume</th><th>Satuan</th><th>Honor</th><th>Subtotal</th></tr></thead>';
             details += '<tbody>';
 
             spkData.rincian_tugas.forEach(function(rinci, index) {
@@ -209,6 +278,9 @@ $(document).ready(function() {
                                 <td style="width:200px;text-align: left;vertical-align: middle;">${rinci.uraian_tugas}</td>
                                 <td style="text-align: center;vertical-align: middle;">${rinci.volume}</td>
                                 <td style="text-align: center;vertical-align: middle;">${rinci.satuan}</td>
+                                <td style="text-align: center;vertical-align: middle;">
+                                    Rp. ${new Intl.NumberFormat('id-ID').format(rinci.volume !== 0 ? rinci.nilai_perjanjian / rinci.volume : 0)}
+                                </td>
                                 <td style="text-align: center;vertical-align: middle;">Rp. ${new Intl.NumberFormat('id-ID').format(rinci.nilai_perjanjian)}</td>
                             </tr>`;
             });
@@ -216,7 +288,7 @@ $(document).ready(function() {
             details += '</tbody>';
             details += `<tfoot>
                             <tr>
-                                <td></td><td></td><td></td>
+                                <td></td><td></td><td></td><td></td>
                                 <td><strong>Total:</strong></td>
                                 <td><b>Rp. ${new Intl.NumberFormat('id-ID').format(spkData.total_perjanjian)}</b></td> <!-- Mengambil total dari spkData -->
                             </tr>
@@ -267,7 +339,7 @@ $(document).ready(function() {
             let details = '';
 
             details += '<table class="table">';
-            details += '<thead><tr><th>No</th><th>Uraian Tugas</th><th>Volume</th><th>Satuan</th><th>Nilai Perjanjian</th></tr></thead>';
+            details += '<thead><tr><th>No</th><th>Uraian Tugas</th><th>Volume</th><th>Satuan</th><th>Honor</th><th>Subtotal</th></tr></thead>';
             details += '<tbody>';
 
             spkData.rincian_tugas.forEach(function(rinci, index) {
@@ -276,6 +348,9 @@ $(document).ready(function() {
                             <td style="width:400px;text-align: left;vertical-align: middle;">${rinci.uraian_tugas}</td>
                             <td style="text-align: center;vertical-align: middle;">${rinci.volume}</td>
                             <td style="text-align: center;vertical-align: middle;">${rinci.satuan}</td>
+                            <td style="text-align: center;vertical-align: middle;">
+                                    Rp. ${new Intl.NumberFormat('id-ID').format(rinci.volume !== 0 ? rinci.nilai_perjanjian / rinci.volume : 0)}
+                            </td>
                             <td style="text-align: center;vertical-align: middle;">Rp. ${new Intl.NumberFormat('id-ID').format(rinci.nilai_perjanjian)}</td>
                         </tr>`;
             });
@@ -283,7 +358,7 @@ $(document).ready(function() {
             details += '</tbody>';
             details += `<tfoot>
                         <tr>
-                            <td></td><td></td><td></td>
+                            <td></td><td></td><td></td><td></td>
                             <td><strong>Total:</strong></td>
                             <td><b>Rp. ${new Intl.NumberFormat('id-ID').format(spkData.total_perjanjian || 0)}</b></td>
                         </tr>
@@ -439,6 +514,86 @@ $(document).ready(function() {
     });
 </script>
 
+// <script>
+// $(document).ready(function() {
+
+//     function toTitleCase(str) {
+//         return str.replace(/\w\S*/g, function(txt) {
+//             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//         });
+//     }
+
+//     $("#nama_mitra").on("input", function() {
+//         let query = $(this).val();
+//         let tglSpk = $("#tgl_spk").val(); // ambil tanggal SPK
+
+//         if (!tglSpk) {
+//             Swal.fire({
+//                 icon: 'warning',
+//                 title: 'Tanggal SPK belum dipilih',
+//                 text: 'Silakan pilih tanggal SPK terlebih dahulu',
+//                 confirmButtonText: 'OK'
+//             });
+            
+//             $(this).val('');
+//             return;
+
+//         }
+
+//         let tahun_kepka = tglSpk.substring(0, 4); // ambil tahun YYYY
+
+//         if (query.length >= 2) {
+//             $.ajax({
+//                 url: '<?php echo site_url("kontrak/autocomplete"); ?>',
+//                 method: "GET",
+//                 data: {
+//                     query: query,
+//                     tahun_kepka: tahun_kepka
+//                 },
+//                 dataType: "json",
+//                 success: function(data) {
+//                     let list = $("#nama_mitra_list");
+//                     list.empty();
+
+//                     if (data.length > 0) {
+//                         data.forEach(function(item) {
+//                             let namaMitraFormatted = toTitleCase(item.nama_mitra);
+//                             list.append(
+//                                 `<a href="#" class="list-group-item list-group-item-action"
+//                                     data-nama="${namaMitraFormatted}"
+//                                     data-id="${item.id_sobat}"
+//                                     data-telp="${item.telp}">
+//                                     ${namaMitraFormatted}
+//                                 </a>`
+//                             );
+//                         });
+//                         list.show();
+//                     } else {
+//                         list.hide();
+//                     }
+//                 }
+//             });
+//         } else {
+//             $("#nama_mitra_list").hide();
+//         }
+//     });
+
+//     $(document).on("click", function(e) {
+//         if (!$(e.target).closest("#nama_mitra").length) {
+//             $("#nama_mitra_list").hide();
+//         }
+//     });
+
+//     $(document).on("click", ".list-group-item", function() {
+//         $("#nama_mitra").val($(this).data("nama"));
+//         $("#id_sobat").val($(this).data("id"));
+//         $("#id_sobat_telp").val($(this).data("id") + " / " + $(this).data("telp"));
+//         $("#nama_mitra_list").hide();
+//     });
+
+// });
+// </script>
+
 
 <script>
     $(function() {
@@ -520,11 +675,15 @@ $(document).ready(function() {
         // Populate uraian_tugas based on selected kelompok_anggaran
         $('#kelompok_anggaran').change(function() {
             var kelompok_anggaran = $(this).val();
+            var tgl_spk = $('#tgl_spk').val(); // yyyy-mm-dd
+            var tahun = tgl_spk ? tgl_spk.substring(0, 4) : '';
+            
             $.ajax({
                 url: "<?php echo base_url('kontrak/tampil_kegiatan_by_kelompok_anggaran'); ?>",
                 method: 'POST',
                 data: {
-                    kelompok_anggaran: kelompok_anggaran
+                    kelompok_anggaran: kelompok_anggaran,
+                    tahun: tahun
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -609,66 +768,7 @@ $(document).ready(function() {
 
 
 <script>
-    $(document).ready(function() {
-        $('#simpan').click(function() {
-            var t_spk = $('#keyword').val();
-            var t_idmitra = $('#id_sobat').val();
-            var id_tugas = $('#id_tugas').val();
-            var volume = $('#volume').val();
-            var jumlah = $('#jumlah').val();
 
-            // Periksa apakah input kosong
-            if (t_spk == '' || t_idmitra == '' || id_tugas == '') {
-                // Tampilkan pesan error jika ada input yang kosong
-                toastr.warning('Mohon lengkapi semua kolom!');
-                return; // Hentikan proses jika ada input yang kosong
-            }
-            if (volume == '') {
-                // Tampilkan pesan error jika ada input yang kosong
-                toastr.warning('Pada Kolom Qty tidak Boleh Kosong!');
-                return; // Hentikan proses jika ada input yang kosong
-            }
-            if (volume == 0) {
-                // Tampilkan pesan error jika ada input yang kosong
-                toastr.warning('Nilai Pada Kolom Qty tidak Boleh 0 !');
-                return; // Hentikan proses jika ada input yang kosong
-            }
-            if (jumlah == 0) {
-                toastr.warning('Belum ada Kegiatan!, mohon di lengkapi dahulu!');
-                return false; // Stop the form from being submitted
-            }
-
-            $.ajax({
-                url: "<?php echo base_url('kontrak/simpan_data'); ?>",
-                method: 'post',
-                data: {
-                    t_spk: t_spk,
-                    t_idmitra: t_idmitra,
-                    id_tugas: id_tugas,
-                    volume: volume,
-                    jumlah: jumlah
-                },
-                success: function(response) {
-                    $('#uraian_tugas').val('Pilih Kegiatan');
-                    $('#id_tugas').val('');
-                    $('#kode_anggaran').val('');
-                    $('#satuan').val('');
-                    $('#honor').val('');
-                    $('#volume').val('');
-                    $('#jumlah').val('');
-
-                    // Tampilkan pesan popup jika respons berhasil
-                    toastr.success("Berhasil menambahkan kegiatan");
-                    $('.update').prop('disabled', false);
-                },
-                error: function(xhr, status, error) {
-                    // Tangani kesalahan jika terjadi
-                    console.error(xhr.responseText);
-                    toastr.warning("Terjadi kesalahan saat menyimpan data ke database.");
-                }
-            });
-        });
-    });
 </script>
 
 
@@ -703,13 +803,17 @@ $(document).ready(function() {
                         }
                         
                         tbody += '<tr>';
-                        tbody += '<td>' + row.no_spk + '</td>';
-                        tbody += '<td>' + jabatanLengkap + ' | ' + row.uraian_tugas + ' | ' + row.kelompok_anggaran + '</td>'; // Ganti dengan nama lengkap jabatan
+                        tbody += '<td style="text-align: center;">' + row.no_spk + '</td>';
+                        tbody += '<td style="text-align: left;">' + jabatanLengkap + ' | ' + row.uraian_tugas + ' | ' + row.kelompok_anggaran + '</td>'; // Ganti dengan nama lengkap jabatan
                         // tbody += '<td>' + row.kelompok_anggaran + '</td>';
-                        tbody += '<td>' + row.satuan + '</td>';
-                        tbody += '<td>' + formatRupiah(row.honor) + '</td>';
-                        tbody += '<td>' + row.volume + '</td>';
-                        tbody += '<td>' + formatRupiah(row.nilai_perjanjian) + '</td>';
+                        tbody += '<td style="text-align: center;">' + row.satuan + '</td>';
+                        tbody += '<td style="text-align: center;">' + formatRupiah(row.honor) + '</td>';
+                        
+                        tbody += '<td>' + row.volume + ' ';
+                        // tbody += '<div class="btn btn-info btn-sm btn-edit" data-row=\'' + JSON.stringify(row) + '\'><i class="fa fa-edit"></i></div> ';
+                        tbody += '</td>';
+                        
+                        tbody += '<td style="text-align: center;">' + formatRupiah(row.nilai_perjanjian) + '</td>';
                         tbody += '<td><div class="btn btn-danger btn-sm btn-hapus" data-no_spk="' + row.no_spk + '" data-id_tugas="' + row.id_tugas + '"><i class="fa fa-trash"></i></div></td>';
                         tbody += '</tr>';
                         total_jumlah += parseInt(row.nilai_perjanjian.replace(/\D/g, ''));
@@ -735,6 +839,50 @@ $(document).ready(function() {
             });
         }
 
+        $('#simpan').click(function() {
+            var t_spk = $('#keyword').val();
+            var t_idmitra = $('#id_sobat').val();
+            var id_tugas = $('#id_tugas').val();
+            var volume = $('#volume').val();
+            var jumlah = $('#jumlah').val();
+
+            if (!t_spk || !t_idmitra || !id_tugas) return toastr.warning('Mohon lengkapi semua kolom!');
+            if (!volume || volume == 0) return toastr.warning('Qty tidak boleh kosong atau 0!');
+            if (jumlah == 0) return toastr.warning('Belum ada Kegiatan!, mohon di lengkapi dahulu!');
+
+            $.ajax({
+                url: "<?php echo base_url('kontrak/simpan_data'); ?>",
+                method: 'post',
+                data: {
+                    t_spk: t_spk,
+                    t_idmitra: t_idmitra,
+                    id_tugas: id_tugas,
+                    volume: volume,
+                    jumlah: jumlah
+                },
+                success: function(response) {
+                    $('#uraian_tugas').val('Pilih Kegiatan');
+                    $('#id_tugas').val('');
+                    $('#kode_anggaran').val('');
+                    $('#satuan').val('');
+                    $('#honor').val('');
+                    $('#volume').val('');
+                    $('#jumlah').val('');
+
+                    // Tampilkan pesan popup jika respons berhasil
+                    toastr.success("Berhasil menambahkan kegiatan");
+                    $('.update').prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    // Tangani kesalahan jika terjadi
+                    console.error(xhr.responseText);
+                    toastr.warning("Terjadi kesalahan saat menyimpan data ke database.");
+                }
+            });
+        });
+        
+        
+    
         // Atur interval untuk memperbarui data setiap 5 detik
         setInterval(function() {
             var keyword = $('#keyword').val();
@@ -1569,8 +1717,11 @@ $(document).ready(function() {
             e.preventDefault(); // Menghentikan pengiriman form
 
             // Ambil nilai dari input
-            var username = $('#username').val();
+            var username = $('#nama').val();
             var password = $('#password').val();
+            var email = $('#email').val();
+            var nip = $('#nip').val();
+            var nip_bps = $('#nip_bps').val();
             var level = $('#level').val();
             var is_active = $('#is_active').val();
 
@@ -1581,6 +1732,9 @@ $(document).ready(function() {
                 data: {
                     username: username,
                     password: password,
+                    email: email,
+                    nip: nip,
+                    nip_bps:nip_bps,
                     level: level,
                     is_active: is_active
                 },
@@ -1630,13 +1784,33 @@ $(document).ready(function() {
             var username = $(this).data('username');
             var level = $(this).data('level');
             var is_active = $(this).data('is_active');
+            var nip = $(this).data('nip');
+            var nip_bps = $(this).data('nip_bps');
+            var email = $(this).data('email');
 
             var formEdit = '<form id="formEditUser" data-id="' + id + '">';
             formEdit += '<div class="form-group">';
-            formEdit += '<label for="username">Username</label>';
+            formEdit += '<label for="username">Nama Lengkap</label>';
             formEdit += '<input hidden type="text" class="form-control" id="edit_id" value="' + id + '">';
             formEdit += '<input type="text" class="form-control" name="username" id="edit_username" value="' + username + '">';
             formEdit += '</div>';
+            formEdit += '<div class="form-group">';
+            formEdit += '<label for="nip">NIP</label>';
+            formEdit += '<input type="text" class="form-control" name="nip" id="edit_nip" value="' + nip + '">';
+            formEdit += '</div>';
+            formEdit += '<div class="form-group">';
+            formEdit += '<label for="nip_bps">NIP BPS</label>';
+            formEdit += '<input type="text" class="form-control" name="nip_bps" id="edit_nip_bps" value="' + nip_bps + '">';
+            formEdit += '</div>';
+            formEdit += '</div>';
+            formEdit += '<div class="form-group">';
+            formEdit += '<label for="nip_bps">Email</label>';
+            formEdit += '<input type="text" class="form-control" name="email" id="edit_email" value="' + email + '">';
+            formEdit += '</div>';
+            // formEdit += '<div class="form-group">';
+            // formEdit += '<label for="foto">Foto</label>';
+            // formEdit += '<input type="file" class="form-control-file" name="foto" id="edit_foto">';
+            // formEdit += '</div>';
             formEdit += '<div class="form-group">';
             formEdit += '<label for="level">Level User</label>';
             formEdit += '<select class="form-control" id="edit_level" name="level">';
@@ -1646,7 +1820,7 @@ $(document).ready(function() {
             formEdit += '</div>';
             formEdit += '<div class="form-group">';
             formEdit += '<label for="is_active">Status</label>';
-            formEdit += '<select class="form-control" id="edit_is_active">';
+            formEdit += '<select class="form-control" id="edit_is_active" name="is_active">';
             formEdit += '<option value="1"' + (is_active == 1 ? ' selected' : '') + '>Aktif</option>';
             formEdit += '<option value="0"' + (is_active == 0 ? ' selected' : '') + '>Tidak Aktif</option>';
             formEdit += '</select>';
@@ -1663,37 +1837,34 @@ $(document).ready(function() {
 
 
         $('#modalEdit').on('submit', '#formEditUser', function(e) {
-            e.preventDefault();
-            var id = $('#edit_id').val();;
-            var username = $('#edit_username').val();;
-            var level = $('#edit_level').val();
-            var is_active = $('#edit_is_active').val();
-
-            $.ajax({
+              e.preventDefault();
+              
+              var formData = new FormData(this);
+              formData.append('id', $('#edit_id').val());
+            
+              $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('user/edit_user'); ?>",
-                data: {
-                    id: id,
-                    username: username,
-                    level: level,
-                    is_active: is_active,
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
                 dataType: "json",
                 success: function(response) {
-                    if (response.status === 'success') {
-                        toastr.success('Data berhasil diperbarui!');
-                        location.reload(); // Untuk me-refresh halaman setelah berhasil memperbarui data
-                    } else {
-                        toastr.error('Gagal memperbarui data!');
-                    }
-                    $('#modalEdit').modal('hide');
+                  if (response.status === 'success') {
+                    toastr.success('Data berhasil diperbarui!');
+                    location.reload();
+                  } else {
+                    toastr.error(response.message || 'Gagal memperbarui data!');
+                  }
+                  $('#modalEdit').modal('hide');
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    toastr.error('Terjadi kesalahan saat mengirim data!');
+                  console.error(xhr.responseText);
+                  toastr.error('Terjadi kesalahan saat mengirim data!');
                 }
+              });
             });
-        });
+
     });
 </script>
 
@@ -2049,6 +2220,622 @@ $(document).ready(function() {
             });
         });
     </script>
+    
+<script>
+$(document).ready(function () {
+    $('#penilaianForm').on('submit', function (e) {
+        e.preventDefault(); // Cegah reload
+
+        let form = $(this);
+        let url = form.attr('action');
+        let formData = form.serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function (response) {
+                try {
+                    let res = JSON.parse(response);
+                    if (res.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: res.message,
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            $('#penilaianModal').modal('hide');
+                            location.reload(); // Reload halaman untuk update data
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: res.message
+                        });
+                    }
+                } catch (e) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kesalahan!',
+                        text: 'Respon tidak valid dari server.'
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Terjadi kesalahan saat mengirim data.'
+                });
+            }
+        });
+    });
+});
+</script>
+
+
+<script>
+  // Fungsi update background slider berdasarkan nilai input
+  function updateSliderBackground(slider) {
+    const val = slider.value;
+    slider.style.background = `linear-gradient(to right, #007bff 0%, #007bff ${val}%, #e0e0e0 ${val}%, #e0e0e0 100%)`;
+  }
+
+  document.querySelectorAll('.open-modal').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.dataset.id;
+      const username = this.dataset.username;  // ambil username
+      const nipbps = this.dataset.nipbps;      // ambil nip_bps
+      const nilai = JSON.parse(this.dataset.nilai);
+      const bulan = this.dataset.bulan;
+      const tahun = this.dataset.tahun;
+
+      // Set nilai input hidden
+      document.getElementById('modal_id_user').value = id;
+      document.getElementById('modal_bulan').value = bulan;
+      document.getElementById('modal_tahun').value = tahun;
+
+      // Update judul modal dengan username dan nip_bps
+      const judulModal = document.getElementById('penilaianModalLabel');
+      judulModal.textContent = `Form Penilaian: ${username} - ${nipbps}`;
+
+      // Set nilai slider dan span, update background slider
+      const aspek = ['berorientasi_pelayanan','akuntabel','kompeten','harmonis','loyal','adaptif','kolaboratif'];
+      let sudahDinilai = false;
+
+      aspek.forEach((a, i) => {
+        const input = document.getElementById('nilai_' + a);
+        const span = document.getElementById('val_' + a);
+        const val = nilai[i] !== null ? nilai[i] : 50;
+
+        input.value = val;
+        span.textContent = val;
+        input.disabled = (nilai[i] !== null);
+        updateSliderBackground(input); // Update warna slider sesuai nilai
+
+        if (nilai[i] !== null) sudahDinilai = true;
+      });
+
+      // Disable tombol submit kalau sudah dinilai
+      document.querySelector('#penilaianForm button[type="submit"]').disabled = sudahDinilai;
+    });
+  });
+
+  // Update span nilai dan background slider saat slider digeser
+  document.querySelectorAll('input[type=range]').forEach(slider => {
+    slider.addEventListener('input', function () {
+      document.getElementById('val_' + this.name).textContent = this.value;
+      updateSliderBackground(this);
+    });
+
+    // Inisialisasi background slider saat halaman load
+    updateSliderBackground(slider);
+  });
+</script>
+
+<script>
+$(document).on('click', '.delete-penilaian', function () {
+  const id_user = $(this).data('id');
+  const nama = $(this).data('nama');
+  const bulan = $(this).data('bulan');
+  const tahun = $(this).data('tahun');
+
+  Swal.fire({
+    title: `Hapus nilai ${nama}?`,
+    text: "Data nilai akan direset.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '<?= base_url("penilaian/hapus") ?>',
+        type: 'POST',
+        data: {
+          id_user: id_user,
+          bulan: bulan,
+          tahun: tahun
+        },
+        success: function (res) {
+          Swal.fire('Berhasil!', 'Nilai berhasil direset.', 'success')
+            .then(() => location.reload());
+        },
+        error: function () {
+          Swal.fire('Gagal!', 'Terjadi kesalahan saat menghapus.', 'error');
+        }
+      });
+    }
+  });
+});
+</script>
+
+<script>
+// Contoh script untuk update label nilai slider (jika perlu)
+document.querySelectorAll('input[type=range]').forEach(function(slider){
+  slider.addEventListener('input', function(){
+    var valSpan = document.getElementById('val_' + this.name);
+    if(valSpan) valSpan.textContent = this.value;
+  });
+});
+
+// Script untuk isi modal saat tombol "Input Nilai" diklik
+$('.open-modal').on('click', function() {
+    $('#modal_id_user').val($(this).data('id'));
+    $('#modal_bulan').val($(this).data('bulan'));
+    $('#modal_tahun').val($(this).data('tahun'));
+    var nilai = $(this).data('nilai');
+    for (var key in nilai) {
+        var input = $('#nilai_' + Object.keys(nilai)[key]);
+        if(input.length) {
+            input.val(nilai[key]);
+            $('#val_' + Object.keys(nilai)[key]).text(nilai[key]);
+        }
+    }
+});
+</script>
+
+
+<script>
+    document.getElementById('btn-kunci').addEventListener('click', function(e) {
+        e.preventDefault();
+        const aksi = this.closest('form').querySelector('input[name="aksi"]').value;
+        const pesan = aksi === 'kunci' ? 'Kunci semua penilaian bulan ini?' : 'Buka kunci penilaian bulan ini?';
+
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: pesan,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: aksi === 'kunci' ? '#d33' : '#3085d6',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.closest('form').submit();
+            }
+        });
+    });
+</script>
+
+<!--<script>-->
+<!--$(document).on('click', '.btn-materai', function () {-->
+<!--    let no_spk = $(this).data('no_spk');-->
+<!--    let status = $(this).data('status');-->
+<!--    let level  = $(this).data('level');-->
+
+<!--    let options = {};-->
+
+<!--    if (level == 2) {-->
+        // USER
+<!--        options = {-->
+<!--            0: 'Belum Bermaterai',-->
+<!--            1: 'Bermaterai (Ajukan)'-->
+<!--        };-->
+
+<!--        if (status == 2) {-->
+<!--            Swal.fire('Info', 'Status sudah dikonfirmasi admin', 'info');-->
+<!--            return;-->
+<!--        }-->
+<!--    } else if (level == 1) {-->
+        // ADMIN
+<!--        options = {-->
+<!--            0: 'Belum Bermaterai',-->
+<!--            1: 'Bermaterai (Menunggu Konfirmasi)',-->
+<!--            2: 'Konfirmasi Materai'-->
+<!--        };-->
+<!--    }-->
+
+<!--    Swal.fire({-->
+<!--        title: 'Ubah Status Materai',-->
+<!--        input: 'select',-->
+<!--        inputOptions: options,-->
+<!--        inputValue: status,-->
+<!--        showCancelButton: true,-->
+<!--        confirmButtonText: 'Simpan',-->
+<!--        cancelButtonText: 'Batal'-->
+<!--    }).then((result) => {-->
+<!--        if (result.isConfirmed) {-->
+<!--            $.ajax({-->
+<!--                url: "<?= base_url('daftarspk/update_materai'); ?>",-->
+<!--                type: "POST",-->
+<!--                data: {-->
+<!--                    no_spk: no_spk,-->
+<!--                    materai: result.value-->
+<!--                },-->
+<!--                dataType: "json",-->
+<!--                success: function (res) {-->
+<!--                    if (res.status) {-->
+<!--                        Swal.fire('Berhasil', res.message, 'success')-->
+<!--                            .then(() => location.reload());-->
+<!--                    } else {-->
+<!--                        Swal.fire('Gagal', res.message, 'error');-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--});-->
+
+<!--</script>-->
+<style>
+.swal2-actions .swal2-confirm,
+.swal2-actions .swal2-cancel {
+    min-width: 120px;   /* bebas: 100 / 120 / 140 */
+}
+</style>
+// <script>
+// $(document).on('click', '.btn-materai', function () {
+//     let no_spk = $(this).data('no_spk');
+//     let status = $(this).data('status');
+//     let level  = $(this).data('level');
+
+//     // ======================
+//     // USER (LEVEL 2)
+//     // ======================
+//     if (level == 2) {
+
+//         if (status == 2) {
+//             Swal.fire('Info', 'Materai sudah dikonfirmasi admin', 'info');
+//             return;
+//         }
+
+//         Swal.fire({
+//             title: 'Sudah bermaterai?',
+//             // text: 'Update Status Materai',
+//             icon: 'question',
+//             showCancelButton: true,
+//             confirmButtonText: 'Ya',
+//             cancelButtonText: 'Tidak'
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 $.ajax({
+//                     url: "<?= base_url('daftarspk/update_materai'); ?>",
+//                     type: "POST",
+//                     data: {
+//                         no_spk: no_spk,
+//                         materai: 1 // AJUKAN
+//                     },
+//                     dataType: "json",
+//                     success: function (res) {
+//                         if (res.status) {
+//                             Swal.fire('Berhasil', res.message, 'success')
+//                                 .then(() => location.reload());
+//                         } else {
+//                             Swal.fire('Gagal', res.message, 'error');
+//                         }
+//                     }
+//                 });
+//             }
+//         });
+
+//         return;
+//     }
+
+//     // ======================
+//     // ADMIN (LEVEL 1)
+//     // ======================
+//     let options = {
+//         0: 'Tanpa Bermaterai',
+//         1: 'Bermaterai (Konfirmasi)',
+//         2: 'Konfirmasi Materai'
+//     };
+
+//     Swal.fire({
+//         title: 'Ubah Status Materai',
+//         input: 'select',
+//         inputOptions: options,
+//         inputValue: status,
+//         showCancelButton: true,
+//         confirmButtonText: 'Simpan',
+//         cancelButtonText: 'Batal'
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             $.ajax({
+//                 url: "<?= base_url('daftarspk/update_materai'); ?>",
+//                 type: "POST",
+//                 data: {
+//                     no_spk: no_spk,
+//                     materai: result.value
+//                 },
+//                 dataType: "json",
+//                 success: function (res) {
+//                     if (res.status) {
+//                         Swal.fire('Berhasil', res.message, 'success')
+//                             .then(() => location.reload());
+//                     } else {
+//                         Swal.fire('Gagal', res.message, 'error');
+//                     }
+//                 }
+//             });
+//         }
+//     });
+// });
+// </script>
+<script>
+
+function updateMateraiUI(el, status) {
+
+    el.removeClass('bg-danger bg-warning bg-success btn-materai');
+    el.css({ cursor: 'pointer', opacity: 1 });
+
+    if (status == 0) {
+        el.addClass('bg-danger btn-materai')
+          .text('Belum Bermaterai');
+    } 
+    else if (status == 1) {
+        el.addClass('bg-warning')
+          .text('Bermaterai (Menunggu Admin)')
+          .css({ cursor: 'not-allowed', opacity: 0.7 });
+    } 
+    else {
+        el.addClass('bg-success btn-materai')
+          .text('Terkonfirmasi');
+    }
+
+    el.data('status', status);
+}
+
+$(document).on('click', '.btn-materai', function () {
+
+    let el     = $(this);
+    let no_spk = el.data('no_spk');
+    let status = el.data('status');
+    let level  = el.data('level');
+
+    // ======================
+    // USER (LEVEL 2)
+    // ======================
+    if (level == 2) {
+
+        if (status == 2) {
+            Swal.fire('Info', 'Materai sudah dikonfirmasi admin', 'info');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Sudah bermaterai?',
+            text: 'Update Status Materai',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= base_url('daftarspk/update_materai'); ?>",
+                    type: "POST",
+                    data: {
+                        no_spk: no_spk,
+                        materai: 1
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status) {
+                            Swal.fire('Berhasil', res.message, 'success');
+                            updateMateraiUI(el, 1);
+                        } else {
+                            Swal.fire('Gagal', res.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+
+        return;
+    }
+
+    // ======================
+    // ADMIN (LEVEL 1)
+    // ======================
+    let options = {
+        0: 'Belum Bermaterai',
+        1: 'Menunggu Konfirmasi',
+        2: 'Terkonfirmasi'
+    };
+
+    Swal.fire({
+        title: 'Ubah Status Materai',
+        input: 'select',
+        inputOptions: options,
+        inputValue: status,
+        showCancelButton: true,
+        confirmButtonText: 'Simpan',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "<?= base_url('daftarspk/update_materai'); ?>",
+                type: "POST",
+                data: {
+                    no_spk: no_spk,
+                    materai: result.value
+                },
+                dataType: "json",
+                success: function (res) {
+                    if (res.status) {
+                        Swal.fire('Berhasil', res.message, 'success');
+                        updateMateraiUI(el, result.value);
+                    } else {
+                        Swal.fire('Gagal', res.message, 'error');
+                    }
+                }
+            });
+        }
+    });
+
+});
+</script>
+
+<script>
+$(document).ready(function () {
+
+  // =============================
+  // SAAT TAHUN DIPILIH
+  // =============================
+  $('#filterTahun').on('change', function () {
+
+    let tahun = $(this).val();
+
+    $('#filterKelompok')
+      .html('<option value="">-- Pilih Kelompok Anggaran --</option>')
+      .prop('disabled', true);
+
+    $('#listTugas').html('Pilih Kelompok Anggaran');
+
+    if (!tahun) return;
+
+    $.ajax({
+      url: "<?= base_url('sk/get_kelompok') ?>",
+      type: "POST",
+      data: { tahun: tahun },
+      dataType: "json",
+      success: function (res) {
+
+        if (res.length === 0) {
+          $('#listTugas').html('Tidak ada kelompok anggaran');
+          return;
+        }
+
+        let opt = '<option value="">-- Pilih Kelompok Anggaran --</option>';
+        res.forEach(function (row) {
+          opt += `<option value="${row.kelompok_anggaran}">
+                    ${row.kelompok_anggaran}
+                  </option>`;
+        });
+
+
+        $('#filterKelompok')
+          .html(opt)
+          .prop('disabled', false);
+      }
+    });
+  });
+
+
+  // =============================
+  // SAAT KELOMPOK DIPILIH
+  // =============================
+  $('#filterKelompok').on('change', function () {
+
+    let tahun    = $('#filterTahun').val();
+    let kelompok = $(this).val();
+
+    $('#listTugas').html('Loading...');
+
+    if (!kelompok) return;
+
+    $.ajax({
+      url: "<?= base_url('sk/get_tugas') ?>",
+      type: "POST",
+      data: {
+        tahun: tahun,
+        kelompok_anggaran: kelompok
+      },
+      dataType: "json",
+      success: function (res) {
+
+        if (res.length === 0) {
+          $('#listTugas').html('Tidak ada kegiatan');
+          return;
+        }
+
+        let html = '';
+        res.forEach(function (t) {
+          html += `
+            <div class="form-check">
+              <input class="form-check-input"
+                     type="checkbox"
+                     name="id_tugas[]"
+                     value="${t.id_tugas}">
+              <label class="form-check-label">
+                ${t.uraian_tugas} - ${t.jabatan} - ${t.satuan} - ${t.honor}
+              </label>
+            </div>
+          `;
+        });
+
+        $('#listTugas').html(html);
+      }
+    });
+  });
+
+});
+</script>
+
+<script>
+$(document).ready(function () {
+
+  function loadKegiatan() {
+    let tahun     = $('#tahun').val();
+    let kelompok  = $('#kelompok_anggaran').val();
+
+    if (tahun !== '' && kelompok !== '') {
+      $('#id_tugas').html('<option value="">Loading...</option>');
+
+      $.ajax({
+        url: "<?= base_url('daftarkegiatan/get_kegiatan_by_filter'); ?>",
+        type: "POST",
+        data: {
+          tahun: tahun,
+          kelompok_anggaran: kelompok
+        },
+        dataType: "json",
+        success: function (data) {
+          let html = '<option value="">Semua Kegiatan</option>';
+        
+          if (data.length === 0) {
+            html += '<option value="">(Tidak ada kegiatan)</option>';
+          }
+        
+          $.each(data, function (i, item) {
+            html += `<option value="${item.id_tugas}">
+                      ${item.jabatan} - ${item.uraian_tugas}
+                    </option>`;
+          });
+        
+          $('#id_tugas').html(html);
+        }
+
+      });
+    } else {
+      $('#id_tugas').html('<option value="">Semua Kegiatan</option>');
+    }
+  }
+
+  $('#tahun, #kelompok_anggaran').change(loadKegiatan);
+
+});
+</script>
+
+
+
+
 
 
 </html>

@@ -84,6 +84,18 @@
                     <span>USER</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('penilaian') ?>">
+                    <i class="fas fa-user-alt"></i>
+                    <span>Penilaian</span></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('penilaian/rekap_penilaian') ?>">
+                    <i class="fas fa-user-alt"></i>
+                    <span>Rekap Penilaian</span></a>
+            </li>
+
 
             <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -98,6 +110,14 @@
                     </div>
                 </div>
             </li> -->
+            
+            <li class="nav-item">
+                <a class="nav-link" href="<?= site_url('sk') ?>">
+                    <i class="fas fa-file-signature"></i>
+                    <span>SK Kegiatan</span>
+                </a>
+            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="http://ci3111.dev.test/auth/logout">
                     <i class="fas fa-sign-out-alt"></i>

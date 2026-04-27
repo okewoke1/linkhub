@@ -73,6 +73,19 @@ class Sptmitra extends CI_Controller
         $data['detail'] = $this->db->query("SELECT * FROM tb_mitra ts WHERE ts.id_mitra='$id'")->result();
         $this->load->view('administrator/cetak_sptmitra', $data);
     }
+    
+public function get_mitra()
+{
+    $search = $this->input->get('q');
+    $this->load->model('Spt_modelmitra');
+    $mitra = $this->Spt_modelmitra->get_mitra($search);
+
+    echo json_encode([
+        'results' => $mitra
+    ]);
+}
+
+
 
 }
 

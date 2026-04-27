@@ -81,6 +81,12 @@
                     <i class="fas fa-user-alt"></i>
                     <span>USER</span></a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url('Penilaian') ?>">
+                    <i class="fas fa-user-alt"></i>
+                    <span>Penilaian</span></a>
+            </li>
 
 
             <!-- 
@@ -97,6 +103,7 @@
                     </div>
                 </div>
             </li> -->
+            
 
             <li class="nav-item">
                 <a class="nav-link" href="http://ci3111.dev.test/auth/logout">

@@ -32,9 +32,9 @@ foreach ($sptmitra as $st) :
       $bln1 = date("m",strtotime($st->tgl_sptmitra));
               $thn1 = date("Y",strtotime($st->tgl_sptmitra));
       ?>
-		 	<td>B-<?php echo $st->no ?>/6109/KP.650/<?php echo ($thn1);?></td>
+		 	<td><?php echo $st->no ?>/6109/KP.650/<?php echo ($thn1);?></td>
 		 	<td><?php echo $st->tgl_sptmitra ?></td>
-		 	<td><?php echo $st->nama ?></td>
+		 	<td><?php echo $st->mitra ?></td>
 		 	<td width="20px"><!--<abbr title="edit" ><?php echo anchor('administrator/sptmitra/edit/'.$st->id_mitra,'<div class="btn btn-sm btn-warning" ><i class="fa fa-edit" ></i></div>') ?></abbr>-->
 		 	<a href="<?php echo base_url('administrator/sptmitra/cetak_sptmitra/'.$st->id_mitra) ?>" target="_blank"><abbr title="cetak spt"><div class="btn btn-sm btn-primary"><i class="fas fa-print"></i></div></abbr></a>
 

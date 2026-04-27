@@ -125,7 +125,14 @@
                         <td style="width:300px;vertical-align: top">1. <?php echo $row->ppk; ?></td>
                         <td style="width:10px;vertical-align: top">:</td>
                         <td style="width:600px;vertical-align: top">
-                            <b>Pejabat Pembuat Komitmen</b>
+                            <?php
+                            if ($row->jabatan_ppk == 'Kuasa Pengguna Anggaran') {
+                                echo '<b>Kuasa Pengguna Anggaran</b> bertindak selaku <b>Penjabat Pembuat Komitmen</b>';
+                            } else {
+                                echo '<b>' . $row->jabatan_ppk . '</b>';
+                            }
+                            ?>
+                            
                             Badan Pusat Statistik Kabupaten Sekadau, berkedudukan di Jalan Merdeka Timur KM 09 Komplek Pemda Kabupaten Sekadau,
                             bertindak untuk dan atas nama Badan Pusat Statistik Kabupaten Sekadau, selanjutnya disebut sebagai
                             <b>PIHAK PERTAMA</b><br>
@@ -210,8 +217,7 @@
                             <b>PIHAK KEDUA</b> berhak untuk mendapatkan honorarium dari <b>PIHAK PERTAMA</b> sebesar
                             <?php echo format_rupiah($row->total_perjanjian); ?>,-
                             (<i><?php echo terbilang($row->total_perjanjian); ?></i>)
-                            untuk pekerjaan sebagaimana dimaksud dalam <b>PASAL 2</b>, termasuk biaya pajak, bea meterai,
-                            pulsa dan kuota internet untuk komunikasi, dan jasa pelayanan keuangan.
+                            untuk pekerjaan sebagaimana dimaksud dalam <b>PASAL 2</b>, termasuk biaya pajak, bea meterai, dan jasa pelayanan keuangan.
                         </td>
                     </tr>
                     <tr>
@@ -435,13 +441,18 @@
 <?php foreach ($tabel as $row) : ?>
     <tr>
         <td><?php echo $no++; ?></td> <!-- Menampilkan nomor yang bertambah -->
-        <td style="text-align: left;"><?php echo $row->uraian_tugas . ' ' . $row->kelompok_anggaran; ?></td>
+        <td style="text-align: left;"><?php echo $row->uraian_tugas; ?></td>
         <td><?php echo $row->kode_anggaran; ?></td>
         <td><?php echo $row->volume; ?></td>
         <td><?php echo $row->satuan; ?></td>
         <td><?php echo $row->volume; ?></td>
         <td><?php echo $row->satuan; ?></td>
-        <td style="text-align: right;"><?php echo format_ribuan($row->honor); ?></td>
+        <td style="text-align: right;">
+            <?php 
+                $honor = ($row->volume != 0) ? ($row->nilai_perjanjian / $row->volume) : 0;
+                echo format_ribuan($honor);
+            ?>
+        </td>
         <td style="text-align: right;"><?php echo format_ribuan($row->nilai_perjanjian); ?></td>
     </tr>
 <?php endforeach; ?>
@@ -466,25 +477,6 @@
 
     </table>
     <br><br>
-    <!--<table>-->
-    <!--    <tr>-->
-    <!--        <td style="text-align: center;width:50%"> </td>-->
-    <!--        <td style="text-align: center;width:50%">Mengetahui,</td>-->
-    <!--    </tr>-->
-    <!--    <tr>-->
-    <!--        <td style="text-align: center;width:50%"> </td>-->
-    <!--        <td style="text-align: center;width:50%">Penjabat Pembuat Komitmen</td>-->
-    <!--    </tr>-->
-    <!--    <tr>-->
-    <!--        <td style="text-align: center"><br><br><br><br><br></td>-->
-    <!--        <td style="text-align: center"><br><br><br><br><br><?php echo ucwords($row->ppk); ?></td>-->
-    <!--    </tr>-->
-    <!--    <tr>-->
-    <!--        <td></td>-->
-    <!--        <td style="text-align: center">NIP. <?php echo $row->nip; ?> </td>-->
-    <!--    </tr>-->
-    <!--</table>-->
-
 
 </div>
 

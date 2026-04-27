@@ -31,6 +31,18 @@ class User_model extends CI_Model
         }
         return $roles; // Returns an array like ['AppA_Admin', 'AppB_Viewer']
     }
+    
+    public function get_id_sispek($user_id)
+    {
+        $this->db->select('t.id');
+        $this->db->from('master_users m');
+        $this->db->join('t_user t', 't.nip = m.nip');
+        $this->db->where('m.id', $user_id);
+        $query = $this->db->get();
+
+        $row = $query->row();
+         return $row ? $row->id : null; // langsung ambil nilai id
+    }
 
     public function get_all()
     {

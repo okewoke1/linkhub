@@ -1,153 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SPD</title>
-  <link rel="stylesheet" href="">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <style>
-    .line-title{
-      border: 0;
-      border-style: inset;
-      border-top: 1px solid #000;
+    <title>SPD</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
     }
 
-    .page {
-        width: 215mm;
-        min-height: 330mm;
+    .table-bordered-custom td, .table-bordered-custom th {
+        border: 1px solid #000;
+        padding: 4px;
     }
 
+    /* Hilangkan garis kiri pada kolom pertama */
+    .table-bordered-custom td:first-child,
+    .table-bordered-custom th:first-child {
+        border-left: none;
+    }
+
+    /* Hilangkan garis kanan pada kolom terakhir */
+    .table-bordered-custom td:last-child,
+    .table-bordered-custom th:last-child {
+        border-right: none;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .no-border {
+        border: none;
+        
+        
+    }
     
-    @page {
-        size: 215mm 330mm;
-        margin: 55px 55px 0px 55px;
-    }
-
-@media print {
-        html, body {
-            width: 215mm;
-            height: 330mm;        
+     .table-bordered-custom tr:first-child td {
+            border-top: 2px solid #000;
         }
+        .table-bordered-custom tr:last-child td {
+            border-bottom: 2px solid #000;
+        }
+        
 
-    }
+</style>
 
-    table, th, td {
-  font-size: 1.09em;
-}
-  </style>
+
 </head>
 <body>
-
-    <img src="<?php echo base_url() ?>assets/img/logobpssekadau.png" style="position: absolute; width: 400px; height: auto;">
-  
-    
-
-       
-
-
 <table >
 <?php foreach($detail as $ts): ?>
-   <tr><td width="560px"></td><td width="150px">Lembar ke</td><td width="20px">:</td><td colspan="2"></td></tr>
-      <tr><td width="560px"></td><td>Kode No</td><td>:</td><td colspan="2">-</td></tr>
-  <?php
+ <?php
       $bln1 = date("m",strtotime($ts->tgl_spt));
   $thn1 = date("Y",strtotime($ts->tgl_spt));
       ?>
-      <tr><td width="560px"></td><td>Nomor</td><td>:</td><td colspan="2"><?php echo $ts->nomor_spd ?>/6109/SPD/<?php echo ($thn1);?></td></tr>
+<tr><td width="560px"></td><td>Nomor</td><td>:</td><td colspan="2"><?php echo $ts->nomor_spd ?>/6109/SPD/<?php echo ($thn1);?></td></tr>
+      <tr><td width="560px"></td><td>Lembar</td><td>:</td><td colspan="2"></td></tr>
+ 
+      
       <?php endforeach ?>
 </table>
   
 
   <table >
   
-<br>
-  <table style="width: 100%;">
+
+<table style="width: 100%;">
+  <tr>
+    <td style="text-align: left;">
+      <span>
+        Badan Pusat Statistik Sekadau<br>
+        Jl. Merdeka Timur KM 09 Komplek Pemda Sekadau<br>
+        Sekadau
+      </span>
+    </td>
+  </tr>
+</table>
+
+
+<table class="table-bordered-custom">
     <tr>
-      <td align="center">
-        <span style="line-height: 1.6; font-weight: bold;">
-          SURAT PERJALANAN DINAS (SPD)
-        </span>
-      </td>
+        <td colspan="3">1. Pejabat Pembuat Komitmen</td>
+        <td colspan="2">Roma Dear Silitonga, SST</td>
     </tr>
-  </table>
-
-<br>
-
-  <table class="table table-bordered">
-     <?php foreach($detail as $ts): ?>
     <tr>
-      <tr><td width="5%" >1</td><td colspan="2" width="35%">Pejabat Pembuat Komitmen</td><td colspan="2" width="60%">Roma Dear Silitonga, SST</td></tr>
-      <tr><td>2</td><td colspan="2" >Nama/NIP Pegawai yang melaksanakan perjalanan dinas</td><td colspan="2"><?php echo $ts->pegawai ?><br>
-      NIP. <?php echo $ts->nip ?></td></tr>
-      <tr><td>3</td><td colspan="2">a. Pangkat dan Golongan<br>
-      b. Jabatan / Instansi<br>
-      c. Tingkat Biaya Perjalanan Dinas</td>
-
-      <td colspan="2"><?php echo $ts->pangkat_pegawai ?>
+        <td colspan="3">2. Nama pegawai yang melaksanakan perjalanan dinas</td>
+        <td colspan="2">
+            <?php foreach ($detail as $ts): ?>
+                <?php echo $ts->pegawai ?><br>
+            <?php endforeach ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+        3. a. Pangkat dan golongan<br>
+    b. Jabatan/ instansi<br>
+    c. Tingkat Biaya Perjalanan Dinas
+    </td>
+        <td colspan="2">
+            <?php foreach ($detail as $ts): ?>
+                <?php echo $ts->pangkat_pegawai ?>
       <br><?php echo $ts->jabatan ?>
-      <br>C</td></tr>
-
-      <tr><td>4</td><td colspan="2">Maksud Perjalanan Dinas</td><td colspan="2"><?php echo $ts->keperluan ?> 
-      <?php echo tgl_indonesia($ts->tgl_berangkat);?> 
-    s.d. <?php echo tgl_indonesia($ts->tgl_kembali);?> di <?php echo $ts->tempat_tugas ?></td></tr>
-      <tr><td>5</td><td colspan="2">Alat angkutan yang dipergunakan</td><td colspan="2"><?php echo $ts->jenis_transport ?></td></tr>
-
-      <tr><td>6</td><td colspan="2">a. Tempat berangkat<br>
-      b. Tempat Tujuan</td>
-      <td colspan="2">Sekadau
-      <br><?php echo $ts->tempat_tugas ?></td></tr>
-
-      
-      <tr><td>7</td><td colspan="2">a. Lamanya Perjalanan Dinas<br>
-      b. Tanggal berangkat<br>
-      c. Tanggal kembali </td>
-      
-      <td colspan="2"><?php
-      $date1 = date("d",strtotime($ts->tgl_berangkat));
-      $date2 = date("d",strtotime($ts->tgl_kembali));
-      $datediff = $date2 - $date1;
-      ?>
-      <?php echo floor($datediff+1);?> Hari
-      <br><?php echo tgl_indonesia($ts->tgl_berangkat) ?> 
-      <br><?php echo tgl_indonesia($ts->tgl_kembali) ?></td></tr> 
-      
-      
-      <tr>
-            <td rowspan="2">8.</td>
-            <td>&emsp;Pengikut:&emsp;</td>
-            <td>&emsp;Nama</td>
-            <td>&emsp;Tanggal Lahir</td>
-            <td>&emsp;Keterangan</td>
-        </tr>
-        <tr>
-            <td>&emsp;1.<br>
-			&emsp;2.</td>
-            <td><?php echo $ts->anggota_1 ?></td>
-            <td></td>
-            <td></td>
-        </tr>
-      
-      <tr><td>9</td><td colspan="2">Pembebanan Anggaran<br>
-      a. Instansi<br>
-      b. Mata Anggaran</td>
-      <td colspan="2"><br>
-      a. BPS Kabupaten Sekadau<br>
-      b. ...
-      </tr>
-
-      <tr><td>10</td><td colspan="2">Keterangan lain - lain</td><td colspan="2"><?php echo $ts->ket_lain ?></td></tr>
-    
-
-
-
-    <?php endforeach ?>
-
-  </table>
- <table >
-   <tr><td width="650px"></td><td width="150px">Dikeluarkan di</td><td width="20px">:</td><td colspan="2">Sekadau</td></tr>
-      <tr><td width="650px"></td><td>Pada Tanggal</td><td>:</td><td colspan="2">
-      <?php
+      <br>    
+            <?php endforeach ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">4. Maksud perjalanan dinas</td>
+        <td colspan="2"><?php echo $ts->keperluan ?></td>
+    </tr>
+    <tr>
+        <td colspan="3">5. Alat Angkutan yang dipergunakan</td>
+        <td colspan="2"><?php echo $ts->jenis_transport ?></td>
+    </tr>
+    <tr>
+                <td colspan="3">
+        6. a. Tempat keberangkatan<br>
+    b. Tempat tujuan<br>
+    </td>
+        <td colspan="2">Sekadau
+      <br><?php echo $ts->tempat_tugas ?></td>
+    </tr>
+    <tr>
+        <?php
             function tgl_indonesia($date){
              /* ARRAY u/ hari dan bulan */
               
@@ -163,154 +143,301 @@
             $result = $tgl." ".$Bulan[(int)$bulan-1]." ".$tahun." ".$waktu."";
             return $result;
             }
-            echo tgl_indonesia($ts->tgl_spt);
+            
             ?>
-      
-      </td></tr>
+    <td colspan="3">
+        7. a. Lamanya perjalanan Dinas<br>
+    b. Tanggal Berangkat<br>
+    c. Tanggal harus kembali/ tiba ditempat baru *)
+    </td>
+    <td colspan="2"><?php
+      $date1 = date("d",strtotime($ts->tgl_berangkat));
+      $date2 = date("d",strtotime($ts->tgl_kembali));
+      $datediff = $date2 - $date1;
+      ?>
+      <?php echo floor($datediff+1);?> Hari
+      <br><?php echo tgl_indonesia($ts->tgl_berangkat) ?> 
+      <br><?php echo tgl_indonesia($ts->tgl_kembali) ?></td>
+</tr>
+
+        
+
+<tr style="height: 40px;">
+    <td colspan="3" style="vertical-align: top;">8. Pengikut :                          Nama</td>
+    <td colspan="1" style="text-align: center; vertical-align: top;">Umur</td>
+    <td colspan="1" style="text-align: center; vertical-align: top;">Hubungan keluarga/keterangan</td>
+</tr>
+
+
+    <tr>
+        <td colspan="3">9. Pembebanan anggaran                                        Program<br>
+                                                                                        Kegiatan<br><br>
+                                                                                        Komponen<br><br>
+    a. Instansi<br>
+    b. Mata anggaran</td>
+        <td colspan="2"><br><br><br><br><br>
+        Badan Pusat Statistik Sekadau
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">10. Keterangan Lain-lain</td>
+        <td colspan="2"></td>
+    </tr>
 </table>
-     <br> 
-
-  <table >
-     <tr>
-        <td width="700px"></td>
-        <td class="text-center">Pejabat Pembuat Komitmen</td>
-      </tr>
-
- </table>
-    <br> <br><br>
 
 
-    <table>
+<table style="width: 100%; margin-top: 20px;">
+    <tr>
+        <td style="width: 50%;"></td>
+        <td style="width: 50%;">
+            <div>
+                <div style="text-align: left;">
+                    Dikeluarkan di: Sekadau<br>
+                    Pada tanggal: <?php echo tgl_indonesia($ts->tgl_spt); ?>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 
-     <tr>
-        <td width="700px"></td>
-        <td class="text-center"><u>Roma Dear Silitonga, SST</u></td>
-      </tr>
-           <tr>
-        <td width="700px"></td>
-        <td class="text-center">NIP. 19940215 201701 2 001</td>
-      </tr>
+<table style="width: 100%; margin-top: 20px;">
+    <tr>
+        <td style="width: 50%;"></td>
+        <td style="width: 50%;">
+            <div>
+                 <div style="text-align: left;">
+                    PEJABAT PEMBUAT KOMITMEN<br>
+                        Program Dukungan Manajemen<br><br><br><br>
+                            <u><b>Roma Dear Silitonga, SST</b></u><br>
+                            NIP. 199402152017012001
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 
+<table style="width: 100%; margin-top: 50px;">
+    <tr>
+        <td style="text-align: left; width: 100%;">
+            Tembusan disampaikan kepada :<br>
+            1.<br>
+            2.
+        </td>
+    </tr>
+</table>
 
   
- </table>
 
- <br> <br> <br> <br> <br> <br>  <br> <br> <br> <br> <br>
-  <p style="font-family:arial; font-size:15px;" align="center">Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
-  Homepage : <u style="color:blue;">http:/sekadaukab.bps.go.d</u>  E-mail : bps6109.bps.go.id</p>
+
+
+
+<div style="page-break-before: always;"></div>
+
+<table class="table-bordered-custom" style="width: 100%; margin-top: 20px;">
+  <tr>
+        <td style="width: 50%; border-top: none;"></td>
+        <td style="width: 50%; border-top: none;">
+<table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Berangkat dari</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;">Kabupaten Sekadau</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;">(Tempat Kedudukan)</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo tgl_indonesia($ts->tgl_berangkat) ?></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Ke</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo $ts->tempat_tugas ?></td>
+    </tr>
+</table>
+            <div style="text-align: center; margin-top: 5px;">
+                Kepala BPS Kabupaten Sekadau<br><br><br><br>
+                <b><u>Imam Setia Harnomo, SST., M.Stat</u></b><br>
+                Nip. 197911262002121006
+            </div>
+        </td>
+    </tr>
     
-    <table class="table table-bordered">
+      <tr>
+        <td style="width: 50%;">
+            <table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
     <tr>
-      <tr><td width="5%" >I.</td><td width="38%"></td><td width="57%">Berangkat dari	&emsp;&emsp;&emsp;:	Sekadau<br>
-      (tempat kedudukan)<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<?php echo $ts->tempat_tugas ?><br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?php echo tgl_indonesia($ts->tgl_berangkat) ?><br><br>
-<p align="center">Mengetahui,<br>
-      Kepala Subbagian Umum</p><br><br>
-      <p align="center"><u>Endri Setiawan, SE</u><br>
-      NIP. 19870916 201212 1 001</p></td></tr>
-      
-    <tr><td>II.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;:<br>
-      Pada Tanggal &emsp;:<br><br><br><br><br><br><br></td>
-      
-      <td>
-      Berangkat dari	&emsp;&emsp;&emsp;:	<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;:	
-
-      </td></tr>
-      <tr><td>III.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;:<br>
-      Pada Tanggal &emsp;:<br><br><br><br><br><br><br></td>
-
-      <td>
-      Berangkat dari	&emsp;&emsp;&emsp;:	<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;:
-     </td></tr>
-
-      <tr><td>IV.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;: Sekadau<br>
-      (tempat kedudukan)<br>
-      Pada Tanggal &emsp;: <?php echo tgl_indonesia($ts->tgl_kembali) ?><br><br>
-      <p align="center">Mengetahui,<br>
-      Pejabat Pembuat Komitmen</p><br><br>
-      <p align="center"><u>Roma Dear Silitonga, SST</u><br>
-      NIP. 19940215 201701 2 001</p>
-      </td>
-      
-      <td><p align="center">Telah diperiksa dengan keterangan bahwa penjelasan tersebut atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu singkat,</p>
-     <p align="center"> Pejabat yang berwenang/pejabat lainnya yang ditunjuk</p>
-      <p align="center">Pejabat Pembuat Komitmen</p><br><br>
-      <p align="center"><u>Roma Dear Silitonga, SST</u><br>
-      NIP. 19940215 201701 2 001</p>
-      </td></tr>
-      
-      <tr><td>V.</td><td colspan="2">Catatan Lain : &nbsp;PPK yang menertibkan SPD, pegawai yang melakukan perjalanan dinas, pejabat yang <br>
-     &emsp;&emsp; &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;mengesahkan tanggal berangkat/tiba, serta bendahara pengeluaran bertanggung jawab <br> &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp; berdasarkan peraturan-peraturan keuangan Negara apabila Negara menderita rugi akibat <br>&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kesalahan, kelalaian, dan kealpaannya.</td></tr>
-
-
- </table>
-<br> <br> <br> <br> <br> <br>  <br> <br>
- 
-  <p style="font-family:arial; font-size:15px;" align="center">Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
-  Homepage : <u style="color:blue;">http:/sekadaukab.bps.go.d</u>  E-mail : bps6109.bps.go.id</p>
-
-  <table class="table table-bordered">
+        <td style="width: 40%; border: none; padding: 0;">Tiba di</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo $ts->tempat_tugas ?></td>
+    </tr>
     <tr>
-      <tr><td width="5%" >I.</td><td width="38%"></td><td width="57%">Berangkat dari	&emsp;&emsp;&emsp;:	Sekadau<br>
-      (tempat kedudukan)<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<?php echo $ts->tempat_tugas ?><br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;: <?php echo tgl_indonesia($ts->tgl_berangkat) ?><br><br>
-<p align="center">Mengetahui,<br>
-      Kepala BPS Kabupaten Sekadau</p><br><br>
-      <p align="center"><u>	Imam Setia Harnomo, SST., M.Stat</u><br>
-      NIP. 19791126 200212 1 006</p></td></tr>
-      
-    <tr><td>II.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;:<br>
-      Pada Tanggal &emsp;:<br><br><br><br><br><br><br></td>
-      
-      <td>
-      Berangkat dari	&emsp;&emsp;&emsp;:	<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;:	
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;">  </td> 
+        <td style="border: none; padding: 0;"></td>
+    </tr>
 
-      </td></tr>
-      <tr><td>III.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;:<br>
-      Pada Tanggal &emsp;:<br><br><br><br><br><br><br></td>
+</table><div style="text-align: center; margin-top: 5px;">
+               <br><br><br><br>
+              <br>
 
-      <td>
-      Berangkat dari	&emsp;&emsp;&emsp;:	<br>
-Ke	&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;:	<br>
-Pada tanggal	&emsp;&emsp;&emsp;&nbsp;&nbsp;:
-     </td></tr>
+            </div></td>
+        <td style="width: 50%;">
+<table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Berangkat dari</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo $ts->tempat_tugas ?></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Ke</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;">Kabupaten Sekadau</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"></td>
+    </tr>
 
-      <tr><td>IV.</td><td>Tiba di &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;: Sekadau<br>
-      (tempat kedudukan)<br>
-      Pada Tanggal &emsp;: <?php echo tgl_indonesia($ts->tgl_kembali) ?><br><br>
-      <p align="center">Mengetahui,<br>
-      Pejabat Pembuat Komitmen</p><br><br>
-      <p align="center"><u>Roma Dear Silitonga, SST</u><br>
-      NIP. 19940215 201701 2 001</p>
-      </td>
-      
-      <td><p align="center">Telah diperiksa dengan keterangan bahwa penjelasan tersebut atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu singkat,</p>
-     <p align="center"> Pejabat yang berwenang/pejabat lainnya yang ditunjuk</p>
-      <p align="center">Pejabat Pembuat Komitmen</p><br><br>
-      <p align="center"><u>Roma Dear Silitonga, SST</u><br>
-      NIP. 19940215 201701 2 001</p>
-      </td></tr>
-      
-      <tr><td>V.</td><td colspan="2">Catatan Lain : &nbsp;PPK yang menertibkan SPD, pegawai yang melakukan perjalanan dinas, pejabat yang <br>
-     &emsp;&emsp; &emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;mengesahkan tanggal berangkat/tiba, serta bendahara pengeluaran bertanggung jawab <br> &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp; berdasarkan peraturan-peraturan keuangan Negara apabila Negara menderita rugi akibat <br>&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kesalahan, kelalaian, dan kealpaannya.</td></tr>
+</table><div style="text-align: center; margin-top: 5px;">
+               <br><br><br><br>
+              <br>
+
+            </div>
+        </td>
+    </tr>
+    
+     <tr>
+        <td style="width: 50%;">
+            <table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Tiba di</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo $ts->tempat_tugas ?></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;">  </td> 
+        <td style="border: none; padding: 0;"></td>
+    </tr>
+
+</table><div style="text-align: center; margin-top: 5px;">
+               <br><br><br><br>
+              <br>
+
+            </div></td>
+        <td style="width: 50%;">
+<table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Berangkat dari</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo $ts->tempat_tugas ?></td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Ke</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;">Kabupaten Sekadau</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"></td>
+    </tr>
+
+</table><div style="text-align: center; margin-top: 5px;">
+               <br><br><br><br>
+              <br>
+
+            </div>
+        </td>
+    </tr>
+    
+
+ <tr>
+   <tr>
+        <td style="width: 50%;"><table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Tiba di</td>
+        <td style="width: 5%; border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;">Kabupaten Sekadau</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;"></td>
+        <td style="border: none; padding: 0;">(Tempat Kedudukan)</td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 0;">Pada Tanggal</td>
+        <td style="border: none; padding: 0;">:</td>
+        <td style="border: none; padding: 0;"><?php echo tgl_indonesia($ts->tgl_kembali) ?></td>
+    </tr>
+
+</table>            <div style="text-align: center; margin-top: 10px;">
+                Pejabat Pembuat Komitmen<br><br><br><br>
+                <b><u>Roma Dear Silitonga, SST</u></b><br>
+                Nip. 199402152017012001
+            </div></td>
+        <td style="width: 50%;">
+<table style="width: 100%; font-size: 14px; border: none; line-height: 1;">
+    <tr>
+        <td style="width: 40%; border: none; padding: 0;">Telah diperiksa dengan keterangan bahwa perjalanan<br>
+tersebut atas perintahnya dan semata-mata untuk<br>
+kepentingan jabatan dalam waktu yang sesingkat<br>
+singkatnya
+</td>
+
+    </tr>
 
 
- </table>
-<br> <br> <br> <br> <br> <br> <br> <br> 
- 
-  <p style="font-family:arial; font-size:15px;" align="center">Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
-  Homepage : <u style="color:blue;">http:/sekadaukab.bps.go.d</u>  E-mail : bps6109.bps.go.id</p>
+
+</table>
+
+
+
+            <div style="text-align: center; margin-top: 10px;">
+                Pejabat Pembuat Komitmen<br><br><br><br>
+                <b><u>Roma Dear Silitonga, SST</u></b><br>
+                Nip. 199402152017012001
+            </div>
+        </td>
+    </tr>
+ <tr>
+
+</table>
+
+CATATAN LAIN - LAIN
+<table style="width: 100%; font-size: 15px; line-height: 1;">
+    <tr>
+        <td style="vertical-align: top; width: 10%;">PERHATIAN</td>
+        <td style="vertical-align: top; width: 1%;">:</td>
+        <td style="text-align: justify;">
+            Pejabat yang berwenang menerbitkan SPD pegawai yang melakukan perjalanan dinas,
+            para pejabat yang mengesahkan tanggal berangkat/tiba serta bendaharawan bertanggung jawab
+            berdasarkan peraturan-peraturan keuangan Negara apabila Negara menderita rugi akibat
+            kesalahan, kelalaian dan kealpaannya.
+        </td>
+    </tr>
+</table>
+
   <script type="text/javascript">
       window.print();
     </script>
+
 
 </body>
 </html>

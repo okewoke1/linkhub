@@ -13,7 +13,8 @@ class AuthHook
     public function check_login()
     {
         log_message('debug', 'AuthHook check_login called');
-        $linkhub_login_url = 'http://ci3111.dev.test/auth/login';
+        // $linkhub_login_url = 'http://ci3111.dev.test/auth/login';
+        $linkhub_login_url = base_url('auth/login');
 
         $public_routes = array(
             'auth/login',

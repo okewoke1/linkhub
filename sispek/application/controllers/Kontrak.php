@@ -52,6 +52,18 @@ class kontrak extends CI_Controller
         // Kembalikan respon JSON
         echo json_encode($results);
     }
+    
+    // public function autocomplete()
+    // {
+    //     $query = $this->input->get('query');
+    //     $tahun_kepka = $this->input->get('tahun_kepka');
+    
+    //     $this->load->model('M_kontrak');
+    
+    //     $results = $this->M_kontrak->search_mitra($query, $tahun_kepka);
+    
+    //     echo json_encode($results);
+    // }
 
 
     public function tampil_data()
@@ -77,7 +89,11 @@ class kontrak extends CI_Controller
     public function tampil_kegiatan_by_kelompok_anggaran()
     {
         $kelompok_anggaran = $this->input->post('kelompok_anggaran');
-        $data = $this->M_kontrak->get_data_tugas_by_kelompok_anggaran($kelompok_anggaran);
+        $tahun = $this->input->post('tahun');
+    
+        $data = $this->M_kontrak
+            ->get_data_tugas_by_kelompok_anggaran($kelompok_anggaran, $tahun);
+    
         echo json_encode($data);
     }
 

@@ -168,13 +168,22 @@
                         <td style="width:35px;vertical-align: top">2. </td>
                         <td style="width:150px;vertical-align: top">Nama</td>
                         <td style="width:10px;vertical-align: top">:</td>
-                        <td>Roma Dear Silitonga, SST</td>
+                        <td><?php echo $row->ppk; ?></td>
                     </tr>
                     <tr>
                         <td> </td>
                         <td>Jabatan</td>
                         <td>:</td>
-                        <td>Pejabat Pembuat Komitmen BPS Kabupaten Sekadau</td>
+                        <td>
+                            <?php
+                            if ($row->jabatan_ppk == 'Kuasa Pengguna Anggaran') {
+                                echo '<b>Kuasa Pengguna Anggaran</b> bertindak selaku <b>Penjabat Pembuat Komitmen</b>';
+                            } else {
+                                echo '<b>' . $row->jabatan_ppk . '</b>';
+                            }
+                            ?>
+                            BPS Kabupaten Sekadau
+                            </td>
                     </tr>
                     <tr style="vertical-align: top;">
                         <td> </td>
@@ -235,8 +244,9 @@
                         <th style="text-align: center;width:50%"><b>PIHAK KEDUA</b></th>
                     </tr>
                     <tr>
-                        <td style="text-align: center"><br><br><br><br><br><?php echo ucwords($row->ppk); ?></td>
                         <td style="text-align: center"><br><br><br><br><br><?php echo ucwords(strtolower($row->nama_mitra)); ?></td>
+                        <td style="text-align: center"><br><br><br><br><br><?php echo ucwords($row->ppk); ?></td>
+
                     </tr>
                     <!--<tr>-->
                     <!--    <td style="text-align: center">NIP. <?php echo $row->nip; ?></td>-->

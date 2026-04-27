@@ -138,19 +138,60 @@ class Daftarspk extends CI_Controller
     }
     
     public function cek_bast() {
-    $no_spk = $this->input->post('no_spk');
+        $no_spk = $this->input->post('no_spk');
+        
+        // Query untuk cek apakah ada BAST terkait dengan no_spk
+        $this->db->where('no_spk', $no_spk);
+        $bast = $this->db->get('t_bast')->row();
     
-    // Query untuk cek apakah ada BAST terkait dengan no_spk
-    $this->db->where('no_spk', $no_spk);
-    $bast = $this->db->get('t_bast')->row();
-
-    if ($bast) {
-        // Jika ada BAST terkait
-        echo json_encode(['has_bast' => true]);
-    } else {
-        // Jika tidak ada BAST terkait
-        echo json_encode(['has_bast' => false]);
+        if ($bast) {
+            // Jika ada BAST terkait
+            echo json_encode(['has_bast' => true]);
+        } else {
+            // Jika tidak ada BAST terkait
+            echo json_encode(['has_bast' => false]);
+        }
     }
+    
+public function update_materai()
+{
+    $level   = $this->session->userdata('level');
+    $no_spk  = $this->input->post('no_spk');
+    $materai = $this->input->post('materai');
+
+    // User tidak boleh konfirmasi
+    if ($level == 2 && $materai == 2) {
+        echo json_encode([
+            'status'  => false,
+            'message' => 'Anda tidak memiliki hak konfirmasi'
+        ]);
+        return;
+    }
+
+    // Logic update sesuai status
+    if ($materai == 0) {
+        $data = [
+            'materai'  => 0,
+            'pengusul' => NULL
+        ];
+    } elseif ($materai == 1) {
+        $data = [
+            'materai'  => 1,
+            'pengusul' => $this->session->userdata('username')
+        ];
+    } else { // materai == 2
+        $data = [
+            'materai' => 2
+            // pengusul tidak disentuh
+        ];
+    }
+
+    $this->M_daftarspk->update_materai($no_spk, $data);
+
+    echo json_encode([
+        'status'  => true,
+        'message' => 'Status materai berhasil diperbarui'
+    ]);
 }
 
 }

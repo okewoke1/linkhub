@@ -23,6 +23,16 @@ class Dashboard extends CI_Controller
         // Kirim data ke view
         $data['page_heading'] = $page_heading;
         $data['username'] = $username;
+$data['materai_bulan_ini']  = $this->M_dashboard->count_materai_bulan_ini_detail();
+$data['materai_bulan_lalu'] = $this->M_dashboard->count_materai_bulan_lalu_detail();
+
+$tgl_bulan_ini  = date('Y-m-01');
+$tgl_bulan_lalu = date('Y-m-01', strtotime('-1 month'));
+
+$data['label_bulan_ini']  = bulan_indonesia($tgl_bulan_ini) . ' ' . date('Y');
+$data['label_bulan_lalu'] = bulan_indonesia($tgl_bulan_lalu) . ' ' . date('Y', strtotime('-1 month'));
+
+
 
         // data dashboard
         $today = date('Y-m-d');

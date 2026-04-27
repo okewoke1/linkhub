@@ -2,161 +2,267 @@
 <html>
 <head>
 
-  <title>ST Mitra</title>
+  <title>ST</title>
 
 <style>
-
 table, th, td {
-  text-align:justify;
+  text-align: justify;
   font-family: "Bookman Old Style", Georgia, serif;
-  font-size: 1.09em;
+  font-size: 1.15em;
 }
 
 img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-
 }
 
 .page {
-        width: 215mm;
-        min-height: 330mm;
-    }
+  width: 215mm;
+  min-height: 330mm;
+position: relative;
+}
 
-    
-    @page {
-        size:  215mm 330mm;
+@page {
+  size:  215mm 330mm;
         margin: 10px 75px 0px 75px;
-    }
+}
 
 @media print {
-        html, body {
-            width: 215mm;
-            height: 330mm;        
+  html, body {
+    width: 215mm;
+    height: 330mm;
+
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .footer-print {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 40px;
+    page-break-inside: avoid;
+  }
+}
+
+.landscape {
+  width: 330mm;
+  min-height: 215mm;
+  transform: rotate(0deg); /* tidak diputar secara visual, tapi orientasi landscape */
+}
+
+@media print {
+            .page-break {
+                page-break-before: always;
+            }
+            .landscape {
+                page: landscape;
+            }
         }
 
-    }
+.qr-code {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+}
+
+.qr-code img {
+  width: 90px;
+}
+
+.qr-spacer {
+  height: 140px;
+}
+
+@page landscape {
+  size: landscape;
+  margin: 10px 30px 0px 30px;
+}
+
+.page.landscape {
+  position: relative;
+}
+
+.page.landscape .qr-code {
+  position: absolute;
+  right: 30px;
+  bottom: 10px;
+}
+
+.footer-landscape {
+  position: fixed;
+  bottom: 0px;              /* sejajar margin bawah */
+  left: 20%;                /* ikut margin kiri @page */
+  right: 30px;               /* ikut margin kanan @page */
+  text-align: center;
+  font-family: Arial;
+  font-size: 15px;
+}
+
 
 </style>
 
 <body>
 
-	  <img src="<?php echo base_url() ?>assets/img/bps.png" style="width:160px; height:130px; color:#00B0F0;">
-    <p style="font-family:Tahoma;  color:#00B0F0; font-size:1.3em;" align="center"><b>BADAN PUSAT STATISTIK</b><br>
-    <b>KABUPATEN SEKADAU</b>
-    </p>
-<br>
+<img src="<?php echo base_url() ?>assets/img/bps.png" style="width:160px; height:130px; color:#00B0F0; margin-top:10px;">
+<p style="font-family:Arial; font-size:1.3em; text-align:center; margin-top:10px;">
+  <b><i>BADAN PUSAT STATISTIK</i></b><br>
+  <b><i>KABUPATEN SEKADAU</i></b>
+</p>
+
 <?php foreach($detail as $ts): ?>
-    <p style="font-family:Bookman Old Style; font-size:1.2em;" align="center"><u><b>SURAT TUGAS</b></u><br>
-    <?php
-      $bln1 = date("m",strtotime($ts->tgl_sptmitra));
-      ?>
+    <p style="font-family:Bookman Old Style; font-size:1.3em;" align="center">SURAT TUGAS<br>
       <?php
+      $bln1 = date("m",strtotime($ts->tgl_sptmitra));
       $thn1 = date("Y",strtotime($ts->tgl_sptmitra));
       ?>
-    Nomor : B-<?php echo $ts->no ?>/6109/KP.650/<?php echo ($thn1);?>
+    NOMOR : <?php echo $ts->no ?>
     </p>
     <?php endforeach ?>
-<table style="width:780px" >
+<table style="width:780px">
 <?php foreach($detail as $ts): ?>
   <tr>
-    <td width=20px valign="top">Menimbang&emsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">a.</td>
-    <td width=680px valign="top"><?php echo $ts->menimbang ?></td>
+    <td width="120px" valign="top">Menimbang</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">a.</td>
+    <td width="620px" valign="top">
+      <?php echo $ts->menimbang ?>, maka dipandang perlu menyesuaikan dengan jadwal kegiatan tersebut;
+    </td>
   </tr>
-  <?php endforeach ?>
+<?php endforeach; ?>
   <tr>
     <td></td>
     <td></td>
     <td valign="top">b.</td>
-    <td valign="top">Bahwa untuk pelaksanaannya perlu dikeluarkan Surat Tugas Kepala BPS Kabupaten Sekadau.</td>
+    <td valign="top">
+      Bahwa untuk pelaksanaannya perlu dikeluarkan Surat Tugas Kepala BPS Kabupaten Sekadau.
+    </td>
   </tr>
-
 </table>
+
 
 <br>
 <table style="width:780px">
-    <tr>
-    <td width=20px valign="top">Mengingat&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">1.&nbsp;</td>
-    <td width=680px valign="top">Undang-Undang No.16 Tahun 1997 tentang Statistik;</td>
-  </tr>
-      <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">2.</td>
-    <td width=680px valign="top">Peraturan Pemerintah No.51 Tahun 1999 tentang Penyelenggaraan Statistik;</td>
-  </tr>
-      <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">3.</td>
-    <td width=680px valign="top">Peraturan Pemerintah No.45 Tahun 2013, tentang Tata Cara Pelaksanaan Anggaran Pendapatan dan Belanja Negara yang diubah dengan Peraturan Pemerintah 50 Tahun 2018 tentang Perubahan atas Peraturan Pemerintah Nomor 45 Tahun 2013 tentang Tata Cara Pelaksanaan Anggaran Pendapatan dan Belanja Negara;</td>
-  </tr>
   <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">4.</td>
-    <td width=680px valign="top">Peraturan Kepala Badan Pusat Statistik Nomor 8 Tahun 2020 tentang Organisasi dan Tata Kerja Badan Pusat Statistik Provinsi dan Badan Pusat Statistik Kabupaten/Kota.</td>
+    <td width="120px" valign="top">Mengingat</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">1.</td>
+    <td width="620px" valign="top">
+      Undang-Undang No.16 Tahun 1997 tentang Statistik;
+    </td>
   </tr>
-  </table>
 
-  <p style="font-family:Bookman Old Style; font-size:1.2em;" align="center"><b>Memberi Perintah:</b></p>
- 
-  <table style="width:780px">
-  <?php foreach($detail as $ts): ?>
   <tr>
-    <td width=20px valign="top">Kepada&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">1.&nbsp;&nbsp;</td>
-    <td width=30px valign="top">Nama</td>
-    <td width=30px valign="top">:</td>
-    <td width=660px valign="top"><?php echo $ts->nama ?></td>
+    <td></td><td></td>
+    <td valign="top">2.</td>
+    <td valign="top">
+      Peraturan Pemerintah No.51 Tahun 1999 tentang Penyelenggaraan Statistik;
+    </td>
   </tr>
-  
-    <tr>
-    <td></td>
-    <td></td>
-    <td>2.</td>
-    <td>Jabatan</td>
-    <td>:</td>
-    <td>Mitra</td>
-  </tr>
+
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>:</td>
-    <td>BPS Kabupaten Sekadau</td>
+    <td></td><td></td>
+    <td valign="top">3.</td>
+    <td valign="top">
+      Peraturan Presiden Nomor 86 Tahun 2007 tentang Badan Pusat Statistik;
+    </td>
   </tr>
-  <?php endforeach ?>
+
+  <tr>
+    <td></td><td></td>
+    <td valign="top">4.</td>
+    <td valign="top">
+      Peraturan Badan Pusat Statistik Nomor 5 Tahun 2019 tentang Tata Naskah Dinas di Lingkungan Badan Pusat Statistik;
+    </td>
+  </tr>
+
+  <tr>
+    <td></td><td></td>
+    <td valign="top">5.</td>
+    <td valign="top">
+      Peraturan Badan Pusat Statistik Nomor 5 Tahun 2023 tentang Organisasi dan Tata Kerja Badan Pusat Statistik Provinsi dan Badan Pusat Statistik Kabupaten/Kota;
+    </td>
+  </tr>
 </table>
 
-  <br>
-  <table style="width:780px">
-  <tr>
-    <td width=20px valign="top">Untuk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=680px valign="top"><?php echo $ts->keperluan ?> Tanggal
-      <?php echo tgl_indonesia($ts->tgl_mulai);?> 
-    s.d. <?php echo tgl_indonesia($ts->tgl_selesai);?> di <?php echo $ts->kecamatan ?>  </td>
 
+<p style="font-family:'Bookman Old Style'; font-size:1.3em; text-align:center;">
+  <b>Memberi Perintah:</b>
+</p>
+
+
+<table style="width:780px">
+<?php foreach($detail as $ts): ?>
+  <tr>
+    <td width="150px" valign="top">Kepada</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">1.</td>
+    <td width="120px" valign="top">Nama</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top"><?php echo $ts->mitra; ?></td>
   </tr>
-  </table>
-  
+
+    <tr>
+    <td width="150px" valign="top"></td>
+    <td width="10px"  valign="top"></td>
+    <td width="30px"  valign="top">2.</td>
+    <td width="120px" valign="top">Jabatan</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top">Mitra</td>
+  </tr>
+      <tr>
+    <td width="150px" valign="top"></td>
+    <td width="10px"  valign="top"></td>
+    <td width="30px"  valign="top"></td>
+    <td width="120px" valign="top"></td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top">BPS Kabupaten Sekadau</td>
+  </tr>
+
+<?php endforeach; ?>
+</table>
+
+
+
+  <br>
+<table style="width:780px">
+  <tr>
+    <td width="150px" valign="top">Untuk</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="650px" valign="top">
+      <?php echo $ts->keperluan; ?> Tanggal
+      <?php echo tgl_indonesia($ts->tgl_mulai); ?>
+      s.d. <?php echo tgl_indonesia($ts->tgl_selesai); ?>
+      di <?php echo $ts->kecamatan; ?>
+    </td>
+  </tr>
+</table>
+
+
+<table style="width:780px">
+  <tr>
+    <td width="145px" valign="top">Pembebanan</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="650px" valign="top">
+      <?php echo $ts->kode_anggaran; ?>
+    </td>
+  </tr>
+</table>
+
+
     <br><br><br>
     <table style="width:780px">
-    
-    
+
+  
+<table style="width:780px; font-family:Bookman Old Style, Georgia, serif; font-size:1.15em;">
   <tr>
-    <td width=500px valign="top"></td>
-    <td width=310px valign="top">Sekadau,
-    <?php
+          
+    <td style="width:60%;"></td>
+    <td style="width:40%; text-align:center;">
+      Sekadau, <?php
             function tgl_indonesia($date){
              /* ARRAY u/ hari dan bulan */
               
@@ -173,189 +279,203 @@ img {
             return $result;
             }
             echo tgl_indonesia($ts->tgl_sptmitra);
-            ?>    
-  </td>
+            ?> <br>
+      Kepala Badan Pusat Statistik<br>
+      Kabupaten Sekadau<br><br><br><br>
+      Imam Setia Harnomo
+    </td>
   </tr>
-  
-  </table>
-  <table style="width:780px">
-  <tr>
-    <td width=500px valign="top"></td>
-    <td width=380px valign="top">KEPALA BADAN PUSAT STATISTIK</td>
-  </tr>
-  </table>
-  
-    <table style="width:780px">
-  <tr>
-    <td width=700px valign="top"></td>
-    <td width=330px valign="top">Kabupaten Sekadau</td>
-  </tr>
-  </table>
-  <br><br><br><br>
-      <table style="width:780px">
-  <tr>
-    <td width=700px valign="top"></td>
-    <td width=345px valign="top">Imam Setia Harnomo</td>
-  </tr>
-  </table>
+</table>
   
  
  
-  <br>  <br>  <br>   <br>  <br>  <br>   <br>  <br>  <br> <br>  <br>  <br>   <br>  <br>  <br>
-  <p style="font-family:arial; font-size:15px;" align="center">Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
-  Homepage : <u style="color:blue;">http:/sekadaukab.bps.go.d</u>  E-mail : bps6109.bps.go.id</p>
+<div class="page-break">
 
-  <img src="<?php echo base_url() ?>assets/img/bps.png" style="width:160px; height:130px; color:#00B0F0;">
-    <p style="font-family:Tahoma;  color:#00B0F0; font-size:1.3em;" align="center"><b>BADAN PUSAT STATISTIK</b><br>
-    <b>KABUPATEN SEKADAU</b>
-    </p>
-<br>
+
+<img src="<?php echo base_url() ?>assets/img/bps.png" style="width:160px; height:130px; color:#00B0F0; margin-top:10px;">
+<p style="font-family:Arial; font-size:1.3em; text-align:center; margin-top:10px;">
+  <b><i>BADAN PUSAT STATISTIK</i></b><br>
+  <b><i>KABUPATEN SEKADAU</i></b>
+</p>
+
 <?php foreach($detail as $ts): ?>
-    <p style="font-family:Bookman Old Style; font-size:1.2em;" align="center"><u><b>SURAT TUGAS</b></u><br>
-    <?php
-      $bln1 = date("m",strtotime($ts->tgl_sptmitra));
-      ?>
+    <p style="font-family:Bookman Old Style; font-size:1.3em;" align="center">SURAT TUGAS<br>
       <?php
+      $bln1 = date("m",strtotime($ts->tgl_sptmitra));
       $thn1 = date("Y",strtotime($ts->tgl_sptmitra));
       ?>
-    Nomor : B-<?php echo $ts->no ?>/6109/KP.650/<?php echo ($thn1);?>
+    NOMOR : <?php echo $ts->no ?>
     </p>
     <?php endforeach ?>
-<table style="width:780px" >
+<table style="width:780px">
 <?php foreach($detail as $ts): ?>
   <tr>
-    <td width=20px valign="top">Menimbang&emsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">a.</td>
-    <td width=680px valign="top"><?php echo $ts->menimbang ?></td>
+    <td width="120px" valign="top">Menimbang</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">a.</td>
+    <td width="620px" valign="top">
+      <?php echo $ts->menimbang ?>, maka dipandang perlu menyesuaikan dengan jadwal kegiatan tersebut;
+    </td>
   </tr>
-  <?php endforeach ?>
+<?php endforeach; ?>
   <tr>
     <td></td>
     <td></td>
     <td valign="top">b.</td>
-    <td valign="top">Bahwa untuk pelaksanaannya perlu dikeluarkan Surat Tugas Kepala BPS Kabupaten Sekadau.</td>
+    <td valign="top">
+      Bahwa untuk pelaksanaannya perlu dikeluarkan Surat Tugas Kepala BPS Kabupaten Sekadau.
+    </td>
   </tr>
-
 </table>
+
 
 <br>
 <table style="width:780px">
-    <tr>
-    <td width=20px valign="top">Mengingat&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">1.&nbsp;</td>
-    <td width=680px valign="top">Undang-Undang No.16 Tahun 1997 tentang Statistik;</td>
-  </tr>
-      <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">2.</td>
-    <td width=680px valign="top">Peraturan Pemerintah No.51 Tahun 1999 tentang Penyelenggaraan Statistik;</td>
-  </tr>
-      <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">3.</td>
-    <td width=680px valign="top">Peraturan Pemerintah No.45 Tahun 2013, tentang Tata Cara Pelaksanaan Anggaran Pendapatan dan Belanja Negara yang diubah dengan Peraturan Pemerintah 50 Tahun 2018 tentang Perubahan atas Peraturan Pemerintah Nomor 45 Tahun 2013 tentang Tata Cara Pelaksanaan Anggaran Pendapatan dan Belanja Negara;</td>
-  </tr>
   <tr>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top"></td>
-    <td width=20px valign="top">4.</td>
-    <td width=680px valign="top">Peraturan Kepala Badan Pusat Statistik Nomor 8 Tahun 2020 tentang Organisasi dan Tata Kerja Badan Pusat Statistik Provinsi dan Badan Pusat Statistik Kabupaten/Kota.</td>
+    <td width="120px" valign="top">Mengingat</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">1.</td>
+    <td width="620px" valign="top">
+      Undang-Undang No.16 Tahun 1997 tentang Statistik;
+    </td>
   </tr>
-  </table>
 
-  <p style="font-family:Bookman Old Style; font-size:1.2em;" align="center"><b>Memberi Perintah:</b></p>
- 
-  <table style="width:780px">
-  <?php foreach($detail as $ts): ?>
   <tr>
-    <td width=20px valign="top">Kepada&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">1.&nbsp;&nbsp;</td>
-    <td width=30px valign="top">Nama</td>
-    <td width=30px valign="top">:</td>
-    <td width=660px valign="top"><?php echo $ts->nama ?></td>
+    <td></td><td></td>
+    <td valign="top">2.</td>
+    <td valign="top">
+      Peraturan Pemerintah No.51 Tahun 1999 tentang Penyelenggaraan Statistik;
+    </td>
   </tr>
-  
-    <tr>
-    <td></td>
-    <td></td>
-    <td>2.</td>
-    <td>Jabatan</td>
-    <td>:</td>
-    <td>Mitra</td>
-  </tr>
+
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>:</td>
-    <td>BPS Kabupaten Sekadau</td>
+    <td></td><td></td>
+    <td valign="top">3.</td>
+    <td valign="top">
+      Peraturan Presiden Nomor 86 Tahun 2007 tentang Badan Pusat Statistik;
+    </td>
   </tr>
-  <?php endforeach ?>
+
+  <tr>
+    <td></td><td></td>
+    <td valign="top">4.</td>
+    <td valign="top">
+      Peraturan Badan Pusat Statistik Nomor 5 Tahun 2019 tentang Tata Naskah Dinas di Lingkungan Badan Pusat Statistik;
+    </td>
+  </tr>
+
+  <tr>
+    <td></td><td></td>
+    <td valign="top">5.</td>
+    <td valign="top">
+      Peraturan Badan Pusat Statistik Nomor 5 Tahun 2023 tentang Organisasi dan Tata Kerja Badan Pusat Statistik Provinsi dan Badan Pusat Statistik Kabupaten/Kota;
+    </td>
+  </tr>
 </table>
 
-  <br>
-  <table style="width:780px">
-  <tr>
-    <td width=20px valign="top">Untuk&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=20px valign="top">:</td>
-    <td width=20px valign="top">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <td width=680px valign="top"><?php echo $ts->keperluan ?> Tanggal
-      <?php echo tgl_indonesia($ts->tgl_mulai);?> 
-     di <?php echo $ts->kecamatan ?>  </td>
 
+<p style="font-family:'Bookman Old Style'; font-size:1.3em; text-align:center;">
+  <b>Memberi Perintah:</b>
+</p>
+
+
+<table style="width:780px">
+<?php foreach($detail as $ts): ?>
+  <tr>
+    <td width="150px" valign="top">Kepada</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="30px"  valign="top">1.</td>
+    <td width="120px" valign="top">Nama</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top"><?php echo $ts->mitra; ?></td>
   </tr>
-  </table>
-  
+
+    <tr>
+    <td width="150px" valign="top"></td>
+    <td width="10px"  valign="top"></td>
+    <td width="30px"  valign="top">2.</td>
+    <td width="120px" valign="top">Jabatan</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top">Mitra</td>
+  </tr>
+      <tr>
+    <td width="150px" valign="top"></td>
+    <td width="10px"  valign="top"></td>
+    <td width="30px"  valign="top"></td>
+    <td width="120px" valign="top"></td>
+    <td width="10px"  valign="top">:</td>
+    <td width="490px" valign="top">BPS Kabupaten Sekadau</td>
+  </tr>
+
+<?php endforeach; ?>
+</table>
+
+
+
+  <br>
+<table style="width:780px">
+  <tr>
+    <td width="150px" valign="top">Untuk</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="650px" valign="top">
+      <?php echo $ts->keperluan; ?> Tanggal
+      <?php echo tgl_indonesia($ts->tgl_mulai); ?>
+      s.d. <?php echo tgl_indonesia($ts->tgl_selesai); ?>
+      di <?php echo $ts->kecamatan; ?>
+    </td>
+  </tr>
+</table>
+
+
+<table style="width:780px">
+  <tr>
+    <td width="145px" valign="top">Pembebanan</td>
+    <td width="10px"  valign="top">:</td>
+    <td width="650px" valign="top">
+      <?php echo $ts->kode_anggaran; ?>
+    </td>
+  </tr>
+</table>
+
+
     <br><br><br>
     <table style="width:780px">
-    
-    
-  <tr>
-    <td width=500px valign="top"></td>
-    <td width=310px valign="top">Sekadau,
-    <?php
-          echo tgl_indonesia($ts->tgl_sptmitra);
-            ?>    
-  </td>
-  </tr>
+
   
-  </table>
-  <table style="width:780px">
+<table style="width:780px; font-family:Bookman Old Style, Georgia, serif; font-size:1.15em;">
   <tr>
-    <td width=500px valign="top"></td>
-    <td width=380px valign="top">KEPALA BADAN PUSAT STATISTIK</td>
+          
+    <td style="width:60%;"></td>
+    <td style="width:40%; text-align:center;">
+      Sekadau, <?php echo tgl_indonesia($ts->tgl_sptmitra);
+            ?> <br>
+      Kepala Badan Pusat Statistik<br>
+      Kabupaten Sekadau<br><br><br><br>
+      Imam Setia Harnomo
+    </td>
   </tr>
-  </table>
-  
-    <table style="width:780px">
-  <tr>
-    <td width=700px valign="top"></td>
-    <td width=330px valign="top">Kabupaten Sekadau</td>
-  </tr>
-  </table>
-  <br><br><br><br>
-      <table style="width:780px">
-  <tr>
-    <td width=700px valign="top"></td>
-    <td width=320px valign="top">Imam Setia Harnomo</td>
-  </tr>
-  </table>
-  
- 
- 
-  <br>  <br>  <br>   <br>  <br>  <br>   <br>  <br>  <br> <br>  <br>  <br>   <br>  <br>  <br>
-  <p style="font-family:arial; font-size:15px;" align="center">Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
-  Homepage : <u style="color:blue;">http:/sekadaukab.bps.go.d</u>  E-mail : bps6109.bps.go.id</p>
+</table>
+</div>
+<div style="
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: Arial;
+  font-size: 15px;
+">
+  Jalan Merdeka Timur KM.9 Komp. Perkantoran Pemda Sekadau 78582 Telp/Fax: (0564) 2021686<br>
+  Homepage : <u style="color:blue;">http://sekadaukab.bps.go.id</u> &nbsp;
+  E-mail : <u style="color:blue;">bps6109@bps.go.id</u>
+</div>
+
+
+
     <script type="text/javascript">
         window.print();
     </script>
-
+</div>
 </body>
 </html>
 

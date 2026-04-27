@@ -4,14 +4,29 @@ class Data_kegiatan extends CI_Model
 {
     public function tampil_data()
     {
-        // Select fields from both t_tugas and t_anggaran
-        $this->db->select('t_tugas.id_tugas, t_tugas.jabatan, t_tugas.uraian_tugas, t_tugas.satuan, t_tugas.honor, t_anggaran.kode_anggaran, t_anggaran.kelompok_anggaran, t_anggaran.bidang_teknis');
+        $this->db->select('
+            t_tugas.tahun,
+            t_tugas.id_tugas,
+            t_tugas.jabatan,
+            t_tugas.uraian_tugas,
+            t_tugas.satuan,
+            t_tugas.honor,
+            t_anggaran.kode_anggaran,
+            t_anggaran.kelompok_anggaran,
+            t_anggaran.bidang_teknis
+        ');
         $this->db->from('t_tugas');
-
-        // Perform the join between t_tugas and t_anggaran on kelompok_anggaran and kode_anggaran
-        $this->db->join('t_anggaran', 't_tugas.kode_anggaran = t_anggaran.kode_anggaran AND t_tugas.kelompok_anggaran = t_anggaran.kelompok_anggaran', 'left');
-
-        // Return the result
+    
+        $this->db->join(
+            't_anggaran',
+            't_tugas.kode_anggaran = t_anggaran.kode_anggaran 
+             AND t_tugas.kelompok_anggaran = t_anggaran.kelompok_anggaran',
+            'left'
+        );
+    
+        // URUTKAN BERDASARKAN TAHUN
+        $this->db->order_by('t_tugas.id_tugas', 'DSC');
+    
         return $this->db->get();
     }
 

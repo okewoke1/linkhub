@@ -180,3 +180,47 @@
         </div>
     </div>
 </body>
+
+<!-- Modal Edit Volume -->
+<div class="modal fade" id="editVolumeModal" tabindex="-1" role="dialog" aria-labelledby="editVolumeModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="formEditVolume">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editVolumeModalLabel">Edit Volume</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit_no_spk">
+          <input type="hidden" id="edit_id_tugas">
+          <div class="form-group">
+            <label>Uraian Tugas</label>
+            <input type="text" id="edit_info" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Satuan</label>
+            <input type="text" id="edit_satuan" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Honor</label>
+            <input type="text" id="edit_honor" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Volume</label>
+            <input type="number" id="edit_volume" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Nilai Perjanjian</label>
+            <input type="text" id="edit_nilai" class="form-control" readonly>
+            <input type="text" id="edit_nilaiperjanjian" class="form-control" hidden>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

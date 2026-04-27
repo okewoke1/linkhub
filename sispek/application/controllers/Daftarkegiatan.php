@@ -19,6 +19,10 @@ class Daftarkegiatan extends CI_Controller
     {
         $level = $this->session->userdata('level');
         $username = $this->session->userdata('username');
+        $id_tugas = $this->input->get('id_tugas');
+        
+
+
 
         // Get filter inputs
         $bulan = $this->input->get('bulan');
@@ -26,14 +30,15 @@ class Daftarkegiatan extends CI_Controller
         $kelompok_anggaran = $this->input->get('kelompok_anggaran');
 
         // Filter SPK based on the selected month, year, and kelompok anggaran
-        $data['dataspk'] = $this->M_daftarkegiatan->get_filtered_spk($bulan, $tahun, $kelompok_anggaran);
+        // $data['dataspk'] = $this->M_daftarkegiatan->get_filtered_spk($bulan, $tahun, $kelompok_anggaran);
+        $data['dataspk'] = $this->M_daftarkegiatan->get_filtered_spk($bulan, $tahun, $kelompok_anggaran, $id_tugas);
 
         // Ambil kelompok anggaran
         $data['kelompok_anggaran_array'] = $this->M_daftarkegiatan->get_kelompok_anggaran();
 
         $data['username'] = $username;
         $data['level'] = $level;
-
+        $data['kegiatan_array'] = $this->M_daftarkegiatan->get_kegiatan();
 
         if ($level == '1') {
             $this->load->view('template/header');
@@ -130,4 +135,17 @@ class Daftarkegiatan extends CI_Controller
             $this->load->view('login');
         }
     }
+    
+public function get_kegiatan_by_filter()
+{
+    $tahun = $this->input->post('tahun');
+    $kelompok_anggaran = $this->input->post('kelompok_anggaran');
+
+    $data = $this->M_daftarkegiatan
+        ->get_kegiatan_by_filter($tahun, $kelompok_anggaran);
+
+    echo json_encode($data);
+}
+
+
 }

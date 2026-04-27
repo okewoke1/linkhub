@@ -96,7 +96,13 @@
                                             
                                             <td><?php echo $row->satuan; ?></td>
                                             <td><?php echo $row->volume; ?></td>
-                                            <td style="text-align: right;"><?php echo format_ribuan($row->honor); ?></td>
+                                            <td style="text-align: right;">
+                                                <?php 
+                                                    $honor = ($row->volume != 0) ? ($row->nilai_perjanjian / $row->volume) : 0;
+                                                    echo format_ribuan($honor);
+                                                ?>
+                                            </td>
+
                                             <td style="text-align: right;"><?php echo format_ribuan($row->nilai_perjanjian); ?></td>
                                         </tr>
                                     <?php endforeach; ?>

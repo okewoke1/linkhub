@@ -38,8 +38,8 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
         <button class="dropdown-item" data-toggle="modal" data-target="#exampleModal"><I class="fa fa-file-alt"></i> Form Mitra Baru</button>
-        <!--<button class="dropdown-item" data-toggle="modal" data-target="#importModal"><i class="fa fa-upload"></i> Upload Excel</button>-->
-        <!--<a href="<?php echo base_url('mitra/download_template'); ?>" class="dropdown-item" type="button">Download Template Excel</a>-->
+        <button class="dropdown-item" data-toggle="modal" data-target="#importModal"><i class="fa fa-upload"></i> Upload Excel</button>
+        <a href="<?php echo base_url('mitra/download_template'); ?>" class="dropdown-item" type="button">Download Template Excel</a>
 
 
       </div>
@@ -62,7 +62,7 @@
               <!-- <th style="width:30px;">No</th> -->
               <th style="width:150px;">Nama Mitra</th>
               <th style="width:100px;">ID Mitra</th>
-              <th style="width:150px;">NIK</th>
+              <!--<th style="width:150px;">NIK</th>-->
               <th style="width:140px;">Telp</th>
               <th style="width:300px;">Alamat</th>
               <th style="width:58px;">AKSI</th>
@@ -74,7 +74,7 @@
                 <!-- <td class="text-center"><?php echo $no++ ?></td> -->
                 <td><?php echo $row->nama_mitra ?></td>
                 <td><?php echo $row->id_sobat ?></td>
-                <td><?php echo $row->nik ?></td>
+                <!--<td><?php echo $row->nik ?></td>-->
                 <td><?php echo $row->telp ?></td>
                 <td><?php echo $row->alamat ?></td>
                 <td>

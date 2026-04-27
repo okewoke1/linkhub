@@ -19,6 +19,7 @@
             <tr style="text-align: center;">
               <th style="vertical-align: middle">NAMA</th>
               <th style="vertical-align: middle">NIP</th>
+              <th style="vertical-align: middle">Jabatan</th>
               <th style="width:70px;vertical-align: middle">Aksi</th>
             </tr>
           </thead>
@@ -26,7 +27,7 @@
               <tr>
                 <td><?php echo $row->ppk ?></td>
                 <td><?php echo $row->nip ?></td>
-
+                <td><?php echo $row->jabatan_ppk ?></td>
                 <td>
 
                   <!-- Tombol Edit -->

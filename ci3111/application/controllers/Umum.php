@@ -70,11 +70,12 @@ class Umum extends MY_Controller
                 'img_loc' => $this->session->userdata('img_loc'),
                 'active_menu' => 'umum'
             );
-
+            
             $user_id = $this->session->userdata('id');
         }
 
         $data['title'] = 'Bukti Dukung SKP';
+        $data['desc'] = 'Link menuju folder bukti dukung SKP setiap pegawai.';
         $data['skp'] = $this->Folder_Skp_model->get_folder_and_user_and_tim($user_id);
 
         $this->load->view('template/header');
@@ -82,7 +83,7 @@ class Umum extends MY_Controller
         $this->load->view('skp', $data);
         $this->load->view('template/footer');
     }
-
+    
     public function ckp_wfh()
     {
         $sidebar_data['nama'] = '';

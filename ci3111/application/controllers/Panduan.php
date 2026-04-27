@@ -18,6 +18,7 @@ class Panduan extends MY_Controller
         }
 
         $data['title'] = 'Panduan Penggunaan';
+        $data['desc'] = 'Panduan penggunaan aplikasi LEAD dan kontak pengembang.';
 
         $this->load->view('template/header');
         $this->load->view('template/sidebar', $sidebar_data);

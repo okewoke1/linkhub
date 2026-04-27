@@ -12,6 +12,51 @@ class M_daftarspk extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+// public function get_all_spk()
+// {
+//     $this->db->select("
+//         t_spk.no_spk,
+//         t_spk.tanggal_spk,
+//         t_spk.total_perjanjian,
+//         t_spk.id_sobat,
+//         t_spk.nip_ppk,
+//         t_mitra.nama_mitra,
+//         t_ppk.ppk,
+//         (
+//             SELECT SUM(r.nilai_perjanjian)
+//             FROM t_spkrinci r
+//             WHERE r.no_spk = t_spk.no_spk
+//         ) AS total_rinci
+//     ");
+
+//     $this->db->from('t_spk');
+
+//     // JOIN MITRA SESUAI TAHUN SPK
+//     $this->db->join(
+//         't_mitra',
+//         't_spk.id_sobat = t_mitra.id_sobat 
+//          AND t_mitra.tahun_kepka = YEAR(t_spk.tanggal_spk)',
+//         'left'
+//     );
+
+//     // JOIN PPK
+//     $this->db->join(
+//         't_ppk',
+//         't_spk.nip_ppk = t_ppk.nip',
+//         'left'
+//     );
+
+//     // SORT: TANGGAL TERBARU + NO SPK
+//     $this->db->order_by('t_spk.tanggal_spk', 'DESC');
+//     $this->db->order_by('t_spk.no_spk', 'DESC');
+
+//     return $this->db->get()->result();
+// }
+
+
+
+
+
 
 
     public function detail_spk($no_spk)
@@ -27,6 +72,27 @@ class M_daftarspk extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    
+// public function detail_spk($no_spk)
+// {
+//     $spk_string = substr($no_spk, 0, 4);
+
+//     $this->db->from('t_spk');
+
+//     $this->db->join(
+//         't_mitra',
+//         't_spk.id_mitra = t_mitra.id_mitra
+//          AND t_mitra.tahun_kepka = YEAR(t_spk.tanggal_spk)',
+//         'left'
+//     );
+
+//     $this->db->join('t_ppk', 't_spk.nip_ppk = t_ppk.nip', 'left');
+//     $this->db->where('t_spk.no_spk LIKE', $spk_string . '%');
+
+//     return $this->db->get()->result();
+// }
+
+
 
     public function tabel_detail_spk($no_spk)
     {
@@ -116,4 +182,14 @@ class M_daftarspk extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    
+public function update_materai($no_spk, $data)
+{
+    $this->db->where('no_spk', $no_spk);
+    return $this->db->update('t_spk', $data);
+}
+
+
+
+
 }

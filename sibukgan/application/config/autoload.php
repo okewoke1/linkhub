@@ -137,4 +137,4 @@ $autoload['model'] = array('Login_model','Sptplh2_modeledit','Sptplh_modeledit',
 'Biaya_modeledit','Sptplh_model','Spt_model2','Pegawai_model','User_model',
 'Sppd_model','Golongan_model','Spt_model','Laporan_model','Spt_modeluser',
 'Laporan_modeluser','Sppd_modeluser','Pegawai_modeledit',
-'Dashboard_modeladmin','Sppd_modeledit','Laporan_modeledit','Spt_modeledit','Spt_modelmitra');
+'Dashboard_modeladmin','Sppd_modeledit','Laporan_modeledit','Spt_modeledit','Spt_modelmitra','Spt_modelmitralam');

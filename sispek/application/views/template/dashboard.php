@@ -89,6 +89,83 @@
             </div>
         </div>
     </div>
+    
+<div class="row">
+
+    <!-- BULAN LALU -->
+    <div class="col-xl-3 col-md-3 mb-3">
+        <div class="card border-left-secondary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="text-xs font-weight-bold text-secondary text-uppercase mb-3">
+                    STATUS MATERAI BULAN <?= strtoupper($label_bulan_lalu); ?>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-danger">
+                            <?= $materai_bulan_lalu->belum ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Belum</div>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-warning">
+                            <?= $materai_bulan_lalu->menunggu ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Menunggu</div>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-success">
+                            <?= $materai_bulan_lalu->terkonfirmasi ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Terkonfirmasi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BULAN INI -->
+    <div class="col-xl-3 col-md-3 mb-3">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-3">
+                     STATUS MATERAI BULAN <?= strtoupper($label_bulan_ini); ?>
+                </div>
+
+                <div class="row">
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-danger">
+                            <?= $materai_bulan_ini->belum ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Belum</div>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-warning">
+                            <?= $materai_bulan_ini->menunggu ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Menunggu</div>
+                    </div>
+
+                    <div class="col-4 text-center">
+                        <div class="h5 font-weight-bold text-success">
+                            <?= $materai_bulan_ini->terkonfirmasi ?? 0; ?>
+                        </div>
+                        <div class="small text-muted">Terkonfirmasi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
 
 <div class="row">
 
@@ -97,7 +174,7 @@
             <!-- Circle Buttons -->
             <div class="card shadow mb-3">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-arrow-circle-left" "></i> PERJANJIAN KONTRAK BULAN SEBELUMNYA</h6>
+                    <h6 class="m-0 font-weight-bold text-primary"><i class="fa fa-arrow-circle-left" "></i> PERJANJIAN KONTRAK BULAN <?= strtoupper($label_bulan_lalu); ?></h6>
                 </div>
                 <div class="card-body">
                     <!--<table class="table table-bordered display" id="dataTable" width="100%" cellspacing="0">-->
@@ -145,7 +222,7 @@
             <!-- Circle Buttons -->
             <div class="card shadow mb-3">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">PERJANJIAN KONTRAK BULAN INI</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">PERJANJIAN KONTRAK BULAN <?= strtoupper($label_bulan_ini); ?></h6>
                 </div>
                 <div class="card-body">
                    

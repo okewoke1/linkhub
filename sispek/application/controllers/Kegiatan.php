@@ -43,6 +43,7 @@ class kegiatan extends CI_Controller
     {
         $jabatan = $this->input->post('jabatan');
         $uraian_tugas = $this->input->post('uraian_tugas');
+        $tahun_kegiatan = $this->input->post('tahun_kegiatan');
         $satuan = $this->input->post('satuan');
         $honor = $this->input->post('honor');
         $kode_anggaran = $this->input->post('kode_anggaran');
@@ -52,6 +53,7 @@ class kegiatan extends CI_Controller
             // 'id_tugas' => $id_tugas,
             'jabatan' => $jabatan,
             'uraian_tugas' => $uraian_tugas,
+            'tahun'=> $tahun_kegiatan,
             'satuan' => $satuan,
             'honor' => $honor,
             'kode_anggaran' => $kode_anggaran,

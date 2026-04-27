@@ -66,25 +66,21 @@
                                             <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
                                             Sisa Anggaran</div>
                                             <div class="h5 mb-0 font-weight-bold text-light">
-                                              <?php 
-$page=0;
+<?php 
+$a = 0;
 foreach ($pagu as $st) :
-          $a= $st->pagu;
-		 ?>
+    $a = $st->pagu; 
+endforeach;
 
-         <?php endforeach; ?>
-        
-           
-          <?php 
-          $page=0; 
-                                              $b=0;
-          foreach ($bbm as $st) :
-          $b= $st->b; ?>
-           
-          <?php endforeach; ?>
-          
-          <?php $c=$a-$b; ?>
-                                              Rp. <?php echo number_format($c,2,',','.')?>
+$b = 0; 
+foreach ($bbm as $st) :
+    $b += $st->b; // Add to $b instead of overwriting
+endforeach;
+
+$c = $a - $b; 
+?>
+Rp. <?php echo number_format($c, 2,',','.'); ?> 
+
                                               
                                           </div>  
                                         </div>
@@ -98,7 +94,16 @@ foreach ($pagu as $st) :
                         </div>
                     </div>
 
-                
+              <?php
+
+echo "Debugging start<br>";
+
+var_dump($a); // Check $a
+var_dump($b); // Check $b
+
+echo "Debugging end<br>";
+?>
+
 
    <!-- Content Row -->
 
@@ -115,93 +120,25 @@ foreach ($pagu as $st) :
         <!-- Card Body -->
       
         <div class="card-body">
-                                              <?php 
-$page=0;
-foreach ($orang as $org) :
-		 ?>
 
-         
-            <h6 class="font-weight-bold">Achmad Tasylichul Adib, S.Tr.Stat<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-    <?php endforeach; ?>
           
-           <?php 
-$page=0;
-foreach ($orang2 as $org) :
-		 ?>
-     
-            <h6 class="font-weight-bold">Arif Rahman, S.Tr. Stat<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
- <?php endforeach; ?>
-               <?php 
-$page=0;
-foreach ($orang3 as $org) :
-		 ?>
-            <h6 class="font-weight-bold">Bimbi Ardhana Rizky, S.Stat<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-    <?php endforeach; ?>
+
            <?php 
 $page=0;
 foreach ($orang4 as $org) :
 		 ?>
-          <h6 class="font-weight-bold">Endri Setiawan, SE<span
+          <h6 class="font-weight-bold">Ardi Surya<span
                     class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-     
-     <?php endforeach; ?>
-           <?php 
-$page=0;
-foreach ($orang5 as $org) :
-		 ?>
-          <h6 class="font-weight-bold">Firza Refo Adi Pratama, S.Tr.Stat<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
+
    <?php endforeach; ?>
            <?php 
 $page=0;
 foreach ($orang6 as $org) :
 		 ?>
-          <h6 class="font-weight-bold">Leila Ayu Zanaria, SE<span
+          <h6 class="font-weight-bold">Imam Setia Harnomo<span
                     class="float-right">Rp. <?php echo number_format(34000000-$org->b,2,',','.')?></span></h6>
           <?php endforeach; ?>
- <?php 
-$page=0;
-foreach ($orang7 as $org) :
-		 ?>
-          
-          <h6 class="font-weight-bold">Roma Dear Silitonga, SST<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-<?php endforeach; ?>
-           <?php 
-$page=0;
-foreach ($orang8 as $org) :
-		 ?>
-          <h6 class="font-weight-bold">Rusli Salam, S.SI<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-     
-  <?php endforeach; ?>
-           <?php 
-$page=0;
-foreach ($orang9 as $org) :
-		 ?>
-          <h6 class="font-weight-bold">Umar<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-     
-<?php endforeach; ?>
-           <?php 
-$page=0;
-foreach ($orang10 as $org) :
-		 ?>
-          <h6 class="font-weight-bold">Wahidi Astuti, SST<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-     <?php endforeach; ?>
 
-           <?php 
-$page=0;
-foreach ($orang11 as $org) :
-		 ?>
-          <h6 class="font-weight-bold">Yon Malikul Kudus, S.ST<span
-                    class="float-right">Rp. <?php echo number_format(3700000-$org->b,2,',','.')?></span></h6>
-     
-<?php endforeach; ?>
    
 
 

@@ -350,4 +350,16 @@
 			form.action += id;
 		});
 	}
+	
+	const sheetContainer = document.querySelector('.sheet-container');
+
+    // Locks the main page when you hover over the spreadsheet
+    sheetContainer.addEventListener('mouseenter', () => {
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Unlocks the main page when you move your mouse away
+    sheetContainer.addEventListener('mouseleave', () => {
+        document.body.style.overflow = ''; 
+    });
 })();

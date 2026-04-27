@@ -42,8 +42,8 @@ class Pegawai_model extends CI_Model
     }
 
     public function tampil_data()
-    {
-        return $this->db->query("
+	{
+	    return $this->db->query("
         SELECT u.*, 
                CASE 
                    WHEN SUM(r.name = 'sibukgan admin') > 0 THEN 'admin'
@@ -56,9 +56,9 @@ class Pegawai_model extends CI_Model
         GROUP BY u.id
         ORDER BY u.id DESC
     ");
-
-        // return $this->db->query('SELECT * FROM  `master_users` ORDER BY id DESC');
-    }
+	    
+// 		return $this->db->query('SELECT * FROM  `master_users` ORDER BY id DESC');
+	}
 
     public function save()
     {

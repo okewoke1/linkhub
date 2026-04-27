@@ -33,15 +33,18 @@ class Auth extends CI_Controller
             log_message('debug', 'Enter user found');
             // --- Crucial Part: Fetch Roles and Store in Shared Session ---
             $user_roles = $this->User_model->get_user_roles($user->id);
-
+            $id_penilai = $this->User_model->get_id_sispek($user->id);
+            
             // Login successful: Set shared session data
             $user_session_data = array(
                 'id' => $user->id,
+                'id_penilai' => $id_penilai,
                 'email' => $user->email,
                 'nama' => $user->nama,
                 'user_roles' => $user_roles,
                 'nip' => $user->nip,
-                'username' => $user->username,
+                'nip_bps' => $user->nip_bps,
+                'username' => $user->nama,
                 'img_loc' => $user->img_loc,
                 'logged_in' => TRUE,
                 'is_logged_in' => TRUE

@@ -22,6 +22,7 @@ class Spt_model extends CI_Model
     public $tgl_kembali;
     public $status_spd;
     public $nomor_spd;
+    public $kode_anggaran;
 
 
 
@@ -42,6 +43,7 @@ class Spt_model extends CI_Model
         $this->form_validation->set_rules('tgl_berangkat','tgl_berangkat','required');
         $this->form_validation->set_rules('tgl_kembali','tgl_kembali','required');
       	$this->form_validation->set_rules('no','no','required');
+      	$this->form_validation->set_rules('kode_anggaran','kode_anggaran','required');
         }
 
     public function getAll()
@@ -71,24 +73,24 @@ class Spt_model extends CI_Model
         return $query->result();
     }
     
-public function auto_code()
-{
-            $this->db->select_max('no');
-          	$this->db->where ('id_spt > 920');
-            $query = $this->db->get('tb_spt');
-            return $query->result_array();
-}
+//public function auto_code()
+//{
+          //  $this->db->select_max('no');
+          //	$this->db->where ('id_spt > 920');
+           // $query = $this->db->get('tb_spt');
+           // return $query->result_array();
+//}
 
 
 
-    public function auto_code2()
-    {
-        $this->db->select_max('nomor_spd');
-        $this->db->where ('status_spd = 1');
-      	$this->db->where ('id_spt >= 882');
-        $query = $this->db->get('tb_spt');
-        return $query->result_array();
-    }
+   // public function auto_code2()
+  //  {
+      //  $this->db->select_max('nomor_spd');
+       // $this->db->where ('status_spd = 1');
+      //	$this->db->where ('id_spt >= 882');
+       // $query = $this->db->get('tb_spt');
+       // return $query->result_array();
+   // }
 
     public function auto_complete2($pemberi_tugas){
         $this->db->where('nama',$pemberi_tugas);
@@ -99,30 +101,33 @@ public function auto_code()
   
 
 
-    public function save()
-    {
-        $post = $this->input->post();
-        $this->tgl_spt = $post["tgl_spt"];
-        $tgl_spt = date('Y-m-d', strtotime($tgl_spt));
-        $this->pegawai = $post["pegawai"];
-        $this->nomor = $post["nomor"];
-        $this->keperluan = $post["keperluan"]; 
-        $this->status_spd = $post["status_spd"];
-        $this->nip = $post["nip"];  
-        $this->nomor_spd = $post["nomor_spd"]; 
-        $this->jabatan = $post["jabatan"]; 
-        $this->menimbang = $post["menimbang"]; 
-        $this->golongan_pegawai = $post["golongan_pegawai"]; 
-        $this->pangkat_pegawai = $post["pangkat_pegawai"];
-        $this->tempat_tugas = $post["tempat_tugas"]; 
-        $this->kode_huruf = $post["kode_huruf"]; 
-        $this->jenis_transport = $post["jenis_transport"];
-        $this->tgl_berangkat = $post["tgl_berangkat"]; 
-        $this->tgl_kembali = $post["tgl_kembali"];
-      	$this->no = $post["no"];
-        
-        return $this->db->insert($this->_table, $this);
-    }
+public function save()
+{
+    $post = $this->input->post();
+    $data = [
+        'tgl_spt' => date('Y-m-d', strtotime($post["tgl_spt"])),
+        'pegawai' => $post["pegawai"],
+        'nomor' => $post["nomor"],   
+        'keperluan' => $post["keperluan"],
+        'status_spd' => $post["status_spd"],
+        'nip' => $post["nip"],
+        'nomor_spd' => $post["nomor_spd"],
+        'jabatan' => $post["jabatan"],
+        'menimbang' => $post["menimbang"],
+        'golongan_pegawai' => $post["golongan_pegawai"],
+        'pangkat_pegawai' => $post["pangkat_pegawai"],
+        'tempat_tugas' => $post["tempat_tugas"],
+        'kode_huruf' => $post["kode_huruf"],
+        'jenis_transport' => $post["jenis_transport"],
+        'tgl_berangkat' => $post["tgl_berangkat"],
+        'tgl_kembali' => $post["tgl_kembali"],
+        'no' => $post["no"],
+        'kode_anggaran' => $post["kode_anggaran"]
+    ];
+
+    return $this->db->insert($this->_table, $data);
+}
+
 
     public function update()
     {
@@ -140,6 +145,7 @@ public function auto_code()
         $this->menimbang = $post["menimbang"]; 
         $this->golongan_pegawai = $post["golongan_pegawai"]; 
         $this->pangkat_pegawai = $post["pangkat_pegawai"];
+        $this->kode_anggaran = $post["kode_anggaran"];
         // $this->statuspost = $post["statuspost"]; 
 
         return $this->db->update($this->_table, $this, array('id_spt' => $post['id']));

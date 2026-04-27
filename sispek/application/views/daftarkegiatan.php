@@ -73,6 +73,14 @@
               ?>
             </select>
           </div>
+          
+<div class="form-group mx-sm-2 mb-2">
+  <label for="id_tugas" class="sr-only">Kegiatan</label>
+  <select name="id_tugas" id="id_tugas" class="form-control form-control-sm">
+    <option value="">Semua Kegiatan</option>
+  </select>
+</div>
+
 
           <button type="submit" class="btn btn-primary btn-sm mb-2">Filter</button>
         </form>
@@ -118,7 +126,12 @@
                   ?>
                 </td>
                 <td><?php echo $row->uraian_tugas; ?></td>
-                <td style="text-align: right;"><?php echo format_ribuan($row->honor); ?></td>
+                <td style="text-align: right;">
+                    <?php 
+                        $honor = ($row->volume != 0) ? ($row->nilai_perjanjian / $row->volume) : 0;
+                        echo format_ribuan($honor);
+                    ?>
+                </td>
                 <td><?php echo $row->volume; ?></td>
                 <td style="text-align: right;"><?php echo format_ribuan($row->nilai_perjanjian); ?></td>
                 <!--<td style="font-size: small;"><?php echo $row->log; ?></td>-->

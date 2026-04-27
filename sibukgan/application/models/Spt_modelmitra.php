@@ -7,7 +7,7 @@ class Spt_modelmitra extends CI_Model
     public $id_mitra;
     public $kecamatan;
     public $menimbang;
-    public $nama;
+    public $mitra;
     public $tgl_mulai;
     public $tgl_selesai;
     public $no;
@@ -18,7 +18,8 @@ class Spt_modelmitra extends CI_Model
     public function rules()
         {
 		$this->form_validation->set_rules('kecamatan','kecamatan','required');
-		$this->form_validation->set_rules('nama','nama','required');
+		$this->form_validation->set_rules('mitra','mitra','required');
+
 		$this->form_validation->set_rules('menimbang','menimbang','required');
         $this->form_validation->set_rules('tgl_mulai','tgl_mulai','required');
         $this->form_validation->set_rules('tgl_selesai','tgl_selesai','required');
@@ -56,21 +57,26 @@ class Spt_modelmitra extends CI_Model
         return $query->result_array();
     }
 
-    public function save()
-    {
-        $post = $this->input->post();
-        $this->nama = $post["nama"];
-        $this->menimbang = $post["menimbang"];
-        $this->kecamatan = $post["kecamatan"];  
-        $this->tgl_mulai = $post["tgl_mulai"]; 
-        $this->tgl_selesai = $post["tgl_selesai"];
-      	$this->no = $post["no"];
-        $this->tgl_sptmitra = $post["tgl_sptmitra"];
-        $tgl_sptmitra = date('Y-m-d', strtotime($tgl_sptmitra));
-      	$this->keperluan = $post["keperluan"];
-        
-        return $this->db->insert($this->_table, $this);
-    }
+public function save()
+{
+    $post = $this->input->post();
+
+    // ambil nama mitra dari tabel master mitra
+    $mitra_row = $this->db->get_where('mitra', ['id_mitra' => $post["mitra"]])->row();
+    $this->mitra = $mitra_row->mitra;
+
+    $this->menimbang = $post["menimbang"];
+    $this->kecamatan = $post["kecamatan"];
+    $this->tgl_mulai = $post["tgl_mulai"];
+    $this->tgl_selesai = $post["tgl_selesai"];
+    $this->no = $post["no"];
+    $this->tgl_sptmitra = date('Y-m-d', strtotime($post["tgl_sptmitra"]));
+    $this->keperluan = $post["keperluan"];
+    
+    return $this->db->insert($this->_table, $this);
+}
+
+
 
     public function update()
     {
@@ -97,6 +103,22 @@ class Spt_modelmitra extends CI_Model
     {
         return $this->db->delete($this->_table, array("id_mitra" => $id));
     }
+    
+public function get_mitra($search = '')
+{
+    $this->db->select('id_mitra AS id, mitra AS text');
+$this->db->from('mitra'); // ? Nama tabel yang benar
+
+    if (!empty($search)) {
+        $this->db->like('mitra', $search);
+    }
+    $this->db->limit(10);
+    return $this->db->get()->result();
+}
+
+
+
+
   
 
 

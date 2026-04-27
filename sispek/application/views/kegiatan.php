@@ -14,14 +14,14 @@
 
       <div class="table-responsive">
 
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="tabel_kegiatan" width="100%" cellspacing="0">
           <thead>
             <tr style="text-align: center;">
-              <th style="vertical-align: middle">Bidang Teknis</th>
               <th style="vertical-align: middle">Kelompok Anggaran</th>
               <th style="vertical-align: middle">Kode Anggaran</th>
               <th style="vertical-align: middle">Jabatan</th>
               <th style="width:250px;vertical-align: middle">Uraian Tugas</th>
+              <th style="vertical-align: middle">Tahun</th>
               <th style="width:120px;vertical-align: middle">Satuan</th>
               <th style="width:120px;vertical-align: middle">Honor</th>
               <th style="width:70px;vertical-align: middle">Aksi</th>
@@ -29,7 +29,7 @@
           </thead>
           <tbody> <?php foreach ($kegiatan as $row) : ?>
               <tr>
-                <td><?php echo $row->bidang_teknis ?></td>
+                
                 <td><?php echo $row->kelompok_anggaran ?></td>
                 <td><?php echo $row->kode_anggaran ?></td>
                 <td>
@@ -48,6 +48,7 @@
                 </td>
                 
                 <td><?php echo $row->uraian_tugas ?></td>
+                <td><?php echo $row->tahun ?></td>
                 <td><?php echo $row->satuan ?></td>
                 <td><?php echo format_rupiah($row->honor); ?></td>
 
@@ -113,6 +114,10 @@
           <div class="form-group">
             <label for="">Uraian Kegiatan</label>
             <input type="text" name="uraian_tugas" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="">Tahun Kegiatan</label>
+            <input type="text" name="tahun_kegiatan" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="">Satuan Kegiatan</label>
