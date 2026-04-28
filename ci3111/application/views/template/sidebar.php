@@ -34,11 +34,14 @@
                 </li>
                 <?php if ($this->session->userdata('logged_in') && in_array('lead admin', $this->session->userdata('user_roles'))): ?>
                     <li class="dropdown"><a href="#" class="<?= ($active_menu == 'kelola') ? 'active' : '' ?>"><i class="bi bi-gear navicon"></i> <span>Kelola</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul class="<?= ($active_menu == 'kelola') ? 'dropdown-active' : '' ?>">
-                            <li><a href="<?= base_url('kelola/tautan') ?>">Tautan</a></li>
-                            <li><a href="<?= base_url('kelola/skp') ?>">SKP Pegawai</a></li>
-                            <li><a href="<?= base_url('kelola/pengumuman') ?>">Pengumuman</a></li>
+                    class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul class="<?= ($active_menu == 'kelola') ? 'dropdown-active' : '' ?>">
+                        <li><a href="<?= base_url('kelola/tautan') ?>">Tautan</a></li>
+                        <li><a href="<?= base_url('kelola/skp') ?>">SKP Pegawai</a></li>
+                        <li><a href="<?= base_url('kelola/pengumuman') ?>">Pengumuman</a></li>
+                        <?php if ($this->session->userdata('logged_in') && in_array('lead super admin', $this->session->userdata('user_roles'))): ?>
+                            <li><a href="<?= base_url('kelola/pengguna') ?>">Pengguna</a></li>
+                        <?php endif; ?>
                         </ul>
                     </li>
                 <?php endif; ?>

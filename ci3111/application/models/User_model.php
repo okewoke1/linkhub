@@ -31,7 +31,7 @@ class User_model extends CI_Model
         }
         return $roles; // Returns an array like ['AppA_Admin', 'AppB_Viewer']
     }
-    
+
     public function get_id_sispek($user_id)
     {
         $this->db->select('t.id');
@@ -41,7 +41,7 @@ class User_model extends CI_Model
         $query = $this->db->get();
 
         $row = $query->row();
-         return $row ? $row->id : null; // langsung ambil nilai id
+        return $row ? $row->id : null; // langsung ambil nilai id
     }
 
     public function get_all()
@@ -50,5 +50,43 @@ class User_model extends CI_Model
         $this->db->from('master_users');
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function getById($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->get('master_users')->row();
+    }
+
+    public function count_all()
+    {
+        return $this->db->count_all('master_users');
+    }
+
+    public function get_paginated_and_roles($limit, $start)
+    {
+        $this->db->limit($limit, $start);
+        $this->db->select('
+            master_users.*,
+            GROUP_CONCAT(master_roles.name SEPARATOR ", ") as roles,
+            GROUP_CONCAT(master_roles.id) as role_ids
+        ');
+        $this->db->from('master_users');
+        $this->db->join('master_users_roles', 'master_users_roles.user_id = master_users.id', 'left');
+        $this->db->join('master_roles', 'master_roles.id = master_users_roles.role_id', 'left');
+        $this->db->group_by('master_users.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function insert($data)
+    {
+        return $this->db->insert('master_users', $data);
+    }
+
+    public function update($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('master_users', $data);
     }
 }

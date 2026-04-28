@@ -66,3 +66,5 @@ $route['kelola/skp/edit/(:num)'] = 'kelola/skp_edit/$1';
 $route['kelola/pengumuman/upload'] = 'kelola/pengumuman_upload';
 $route['kelola/pengumuman/edit/(:num)'] = 'kelola/pengumuman_edit/$1';
 $route['kelola/pengumuman/delete/(:num)'] = 'kelola/pengumuman_delete/$1';
+$route['kelola/pengguna/upload'] = 'kelola/pengguna_upload';
+$route['kelola/pengguna/edit/(:num)'] = 'kelola/pengguna_edit/$1';

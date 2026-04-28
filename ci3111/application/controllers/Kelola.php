@@ -10,6 +10,7 @@ class Kelola extends MY_Controller
         $this->load->model('Folder_Skp_model');
         $this->load->model('Tim_model');
         $this->load->model('User_model');
+        $this->load->model('Role_model');
         $this->load->model('Pengumuman_model');
         $this->load->library('pagination');
     }
@@ -137,8 +138,8 @@ class Kelola extends MY_Controller
 
             if ($this->upload->do_upload('img')) {
                 // delete old file
-                if (!empty($tautan->img_loc) && file_exists('./' . $tautan->img_loc)) {
-                    unlink('./' . $tautan->img_loc);
+                if (!empty($existing_img) && file_exists('./' . $existing_img)) {
+                    unlink('./' . $existing_img);
                 }
 
                 $img_name = $this->upload->data('file_name');
@@ -376,5 +377,215 @@ class Kelola extends MY_Controller
             $this->session->set_flashdata('error', 'Gagal menghapus pengumuman.');
         }
         redirect('kelola/pengumuman');
+    }
+
+    public function pengguna()
+    {
+        $sidebar_data['nama'] = '';
+        $sidebar_data['img_loc'] = 'assets/img/bps-sekadau.png';
+        $sidebar_data['active_menu'] = 'kelola';
+
+        if ($this->session->userdata('logged_in')) {
+            $sidebar_data = array(
+                'nama' => $this->session->userdata('nama'),
+                'img_loc' => $this->session->userdata('img_loc'),
+                'active_menu' => 'kelola'
+            );
+        }
+
+        $data['title'] = 'Kelola Pengguna';
+        $data['desc'] = 'Menu kelola pengguna yang dapat diakses oleh super admin.';
+
+        $config = array();
+        $config["base_url"] = site_url('kelola/pengguna');
+        $config["total_rows"] = $this->User_model->count_all();
+        $config["per_page"] = 10;
+        $config["uri_segment"] = 3;
+
+        // Optional: Bootstrap 4/5 pagination styling
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['attributes'] = ['class' => 'page-link'];
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_tag_open'] = '<li class="page-item">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_tag_open'] = '<li class="page-item">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a class="page-link" href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+
+        $this->pagination->initialize($config);
+
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data['pengguna'] = $this->User_model->get_paginated_and_roles($config["per_page"], $page);
+        $data['roles'] = $this->Role_model->get_all();
+        $data['links'] = $this->pagination->create_links();
+
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar', $sidebar_data);
+        $this->load->view('kelola_pengguna', $data);
+        $this->load->view('template/footer');
+    }
+
+    public function pengguna_upload()
+    {
+        $this->load->library('upload');
+
+        $config['upload_path'] = './uploads/foto_pegawai/';
+        $config['allowed_types'] = 'webp|jpg|png|jpeg';
+        $config['max_size'] = 2048;
+        $config['encrypt_name'] = TRUE;
+
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0755, true);
+        }
+
+        $this->upload->initialize($config);
+
+        if (!empty($_FILES['img']['name'])) {
+            if ($this->upload->do_upload('img')) {
+                $upload_data = $this->upload->data();
+                $img_name = $upload_data['file_name'];
+            } else {
+                $error = $this->upload->display_errors();
+                $this->session->set_flashdata('error', $error);
+                redirect('kelola/pengguna');
+                return;
+            }
+        } else {
+            $img_name = null;
+        }
+
+        $data = [
+            'nama' => $this->input->post('nama'),
+            'username' => $this->input->post('username'),
+            'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+            'email' => $this->input->post('email'),
+            'blokir' => 'N',
+            'nip' => $this->input->post('nip'),
+            'nip_bps' => $this->input->post('nip-bps'),
+            'pangkat' => $this->input->post('pangkat'),
+            'golongan' => $this->input->post('golongan'),
+            'jabatan' => $this->input->post('jabatan'),
+            'status' => 1,
+            'img_loc' => isset($img_name) ? 'uploads/foto_pegawai/' . $img_name : 'assets/img/pegawai/DEFAULT.webp',
+        ];
+
+        $this->db->trans_start();
+        if ($this->User_model->insert($data)) {
+            // Get the newly created User ID
+            $user_id = $this->db->insert_id();
+
+            // Get the selected roles from the checkbox array
+            $roles = $this->input->post('roles');
+
+            if (!empty($roles) && is_array($roles)) {
+                $role_data = [];
+                foreach ($roles as $role_id) {
+                    $role_data[] = [
+                        'user_id' => $user_id,
+                        'role_id' => $role_id
+                    ];
+                }
+                // 4. Batch insert into intermediary table (efficient)
+                $this->db->insert_batch('master_users_roles', $role_data);
+            }
+
+            $this->session->set_flashdata('success', 'Pengguna berhasil ditambahkan.');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal menambahkan pengguna.');
+        }
+        $this->db->trans_complete();
+
+        redirect('kelola/pengguna');
+    }
+
+    public function pengguna_edit($id)
+    {
+        $this->load->library('upload');
+
+        $pengguna = $this->User_model->getById($id);
+        $existing_img = $pengguna->img_loc;
+
+        // Handle image replacement
+        if (!empty($_FILES['img']['name'])) {
+            $config['upload_path'] = './uploads/foto_pegawai/';
+            $config['allowed_types'] = 'jpg|jpeg|png|webp';
+            $config['max_size'] = 2048;
+            $config['encrypt_name'] = TRUE;
+
+            if (!is_dir($config['upload_path'])) {
+                mkdir($config['upload_path'], 0755, true);
+            }
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('img')) {
+                // delete old file
+                $is_not_default = (strpos($existing_img, 'DEFAULT.webp') === false);
+
+                if (!empty($existing_img) && file_exists('./' . $existing_img) && $is_not_default) {
+                    unlink('./' . $existing_img);
+                }
+
+                $img_name = $this->upload->data('file_name');
+            } else {
+                $this->session->set_flashdata('error', $this->upload->display_errors());
+                redirect('kelola/pengguna');
+            }
+        }
+
+        $password_input = $this->input->post('password');
+        $password_hashed = !empty($password_input) ? password_hash($password_input, PASSWORD_BCRYPT) : $pengguna->password;
+        $blokir = $this->input->post('blokir') ? 'Y' : 'N';
+        $status = $this->input->post('aktif') ? 1 : 0;
+        $data = [
+            'nama' => $this->input->post('nama'),
+            'username' => $this->input->post('username'),
+            'password' => $password_hashed,
+            'email' => $this->input->post('email'),
+            'blokir' => $blokir,
+            'nip' => $this->input->post('nip'),
+            'nip_bps' => $this->input->post('nip-bps'),
+            'pangkat' => $this->input->post('pangkat'),
+            'golongan' => $this->input->post('golongan'),
+            'jabatan' => $this->input->post('jabatan'),
+            'status' => $status,
+            'img_loc' => isset($img_name) ? 'uploads/foto_pegawai/' . $img_name : $existing_img,
+        ];
+
+        $this->db->trans_start();
+
+        $this->User_model->update($id, $data);
+
+        // Handle role updates
+        $roles = $this->input->post('roles');
+        // 1. Delete existing roles
+        $this->db->where('user_id', $id);
+        $this->db->delete('master_users_roles');
+
+        // 2. Insert new roles
+        if (!empty($roles) && is_array($roles)) {
+            $role_data = [];
+            foreach ($roles as $role_id) {
+                $role_data[] = [
+                    'user_id' => $id,
+                    'role_id' => $role_id
+                ];
+            }
+            $this->db->insert_batch('master_users_roles', $role_data);
+        }
+
+        $this->db->trans_complete();
+
+        redirect('kelola/pengguna');
     }
 }

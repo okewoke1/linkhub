@@ -152,7 +152,7 @@
 					layoutMode: layout,
 					filter: filter,
 					sortBy: sort,
-				}
+				},
 			);
 		});
 
@@ -173,7 +173,7 @@
 							aosInit();
 						}
 					},
-					false
+					false,
 				);
 			});
 
@@ -201,7 +201,7 @@
 	function initSwiper() {
 		document.querySelectorAll(".init-swiper").forEach(function (swiperElement) {
 			let config = JSON.parse(
-				swiperElement.querySelector(".swiper-config").innerHTML.trim()
+				swiperElement.querySelector(".swiper-config").innerHTML.trim(),
 			);
 
 			if (swiperElement.classList.contains("swiper-tab")) {
@@ -282,7 +282,6 @@
 
 			const form = modalEdit.querySelector("form");
 
-			// for kelola tautan
 			const id = button.getAttribute("data-id");
 			const data_user_id = button.getAttribute("data-user-id");
 			const nama = button.getAttribute("data-nama");
@@ -294,13 +293,26 @@
 			const active = button.getAttribute("data-active");
 			const start_date = button.getAttribute("data-start-date");
 			const end_date = button.getAttribute("data-end-date");
+			const email = button.getAttribute("data-email");
+			const blokir = button.getAttribute("data-blokir");
+			const username = button.getAttribute("data-username");
+			const nip = button.getAttribute("data-nip");
+			const nip_bps = button.getAttribute("data-nip-bps");
+			const pangkat = button.getAttribute("data-pangkat");
+			const golongan = button.getAttribute("data-golongan");
+			const jabatan = button.getAttribute("data-jabatan");
+			const status = button.getAttribute("data-status");
+			const role = button.getAttribute("data-role");
 
+			// for general
 			const elId = document.getElementById("edit-id");
 			if (elId) elId.value = id;
 
+			// for kelola tautan and kelola pengguna
 			const elNama = document.getElementById("edit-nama");
 			if (elNama) elNama.value = nama;
 
+			// for kelola tautan
 			const elDesc = document.getElementById("edit-desc");
 			if (elDesc) elDesc.value = desc;
 
@@ -347,19 +359,67 @@
 				elEndDate.value = end_date ? end_date.split(" ")[0] : "";
 			}
 
+			// for kelola pengguna
+			const elEmail = document.getElementById("edit-email");
+			if (elEmail) elEmail.value = email;
+
+			const elBlokir = document.getElementById("edit-blokir");
+			const elAktif = document.getElementById("edit-aktif");
+			if (elBlokir && elAktif) {
+				if (blokir === "Y") {
+					elBlokir.checked = true;
+				} else {
+					elBlokir.checked = false;
+				}
+				if (status == 1) {
+					elAktif.checked = true;
+				} else {
+					elAktif.checked = false;
+				}
+			}
+
+			const elUsername = document.getElementById("edit-username");
+			if (elUsername) elUsername.value = username;
+
+			const elNip = document.getElementById("edit-nip");
+			if (elNip) elNip.value = nip;
+
+			const elNipBps = document.getElementById("edit-nip-bps");
+			if (elNipBps) elNipBps.value = nip_bps;
+
+			const elPangkat = document.getElementById("edit-pangkat");
+			if (elPangkat) elPangkat.value = pangkat;
+
+			const elGolongan = document.getElementById("edit-golongan");
+			if (elGolongan) elGolongan.value = golongan;
+
+			const elJabatan = document.getElementById("edit-jabatan");
+			if (elJabatan) elJabatan.value = jabatan;
+
+			const elRole = document.querySelectorAll(
+				"#modalEdit .form-check input[name='roles[]']",
+			);
+			if (elRole) {
+				elRole.forEach((checkbox) => {
+					checkbox.checked = role
+						? role.split(",").includes(checkbox.value)
+						: false;
+				});
+			}
+
 			form.action += id;
 		});
 	}
-	
-	const sheetContainer = document.querySelector('.sheet-container');
 
-    // Locks the main page when you hover over the spreadsheet
-    sheetContainer.addEventListener('mouseenter', () => {
-        document.body.style.overflow = 'hidden';
-    });
+	const sheetContainer = document.querySelector(".sheet-container");
 
-    // Unlocks the main page when you move your mouse away
-    sheetContainer.addEventListener('mouseleave', () => {
-        document.body.style.overflow = ''; 
-    });
+	// Locks the main page when you hover over the spreadsheet
+	sheetContainer.addEventListener("mouseenter", () => {
+		document.body.style.overflow = "hidden";
+	});
+
+	// Unlocks the main page when you move your mouse away
+	sheetContainer.addEventListener("mouseleave", () => {
+		document.body.style.overflow = "";
+	});
 })();
