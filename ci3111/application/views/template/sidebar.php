@@ -34,23 +34,29 @@
                 </li>
                 <?php if ($this->session->userdata('logged_in') && in_array('lead admin', $this->session->userdata('user_roles'))): ?>
                     <li class="dropdown"><a href="#" class="<?= ($active_menu == 'kelola') ? 'active' : '' ?>"><i class="bi bi-gear navicon"></i> <span>Kelola</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                    <ul class="<?= ($active_menu == 'kelola') ? 'dropdown-active' : '' ?>">
-                        <li><a href="<?= base_url('kelola/tautan') ?>">Tautan</a></li>
-                        <li><a href="<?= base_url('kelola/skp') ?>">SKP Pegawai</a></li>
-                        <li><a href="<?= base_url('kelola/pengumuman') ?>">Pengumuman</a></li>
-                        <?php if ($this->session->userdata('logged_in') && in_array('lead super admin', $this->session->userdata('user_roles'))): ?>
-                            <li><a href="<?= base_url('kelola/pengguna') ?>">Pengguna</a></li>
-                        <?php endif; ?>
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul class="<?= ($active_menu == 'kelola') ? 'dropdown-active' : '' ?>">
+                            <li><a href="<?= base_url('kelola/tautan') ?>">Tautan</a></li>
+                            <li><a href="<?= base_url('kelola/skp') ?>">SKP Pegawai</a></li>
+                            <li><a href="<?= base_url('kelola/pengumuman') ?>">Pengumuman</a></li>
+                            <?php if ($this->session->userdata('logged_in') && in_array('lead super admin', $this->session->userdata('user_roles'))): ?>
+                                <li><a href="<?= base_url('kelola/pengguna') ?>">Pengguna</a></li>
+                            <?php endif; ?>
                         </ul>
                     </li>
                 <?php endif; ?>
                 <li><a href="<?= base_url('panduan') ?>" class="<?= ($active_menu == 'panduan') ? 'active' : '' ?>"><i class="bi bi-question-circle navicon"></i> Panduan Penggunaan</a></li>
-                <?php if ($this->session->userdata('logged_in')): ?>
-                    <li><a href="<?= base_url('auth/logout') ?>"><i class="bi bi-box-arrow-right navicon"></i> Logout</a></li>
-                <?php else: ?>
-                    <li><a href="<?= base_url('auth/login') ?>"><i class="bi bi-box-arrow-right navicon"></i> Login</a></li>
-                <?php endif; ?>
+                <li class="dropdown"><a href="#" class="<?= ($active_menu == 'akun') ? 'active' : '' ?>"><i class="bi bi-person navicon"></i> <span>Akun</span> <i
+                            class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul class="<?= ($active_menu == 'akun') ? 'dropdown-active' : '' ?>">
+                        <li><a href="<?= base_url('auth/ganti_password') ?>">Ganti Password</a></li>
+                        <?php if ($this->session->userdata('logged_in')): ?>
+                            <li><a href="<?= base_url('auth/logout') ?>">Logout</a></li>
+                        <?php else: ?>
+                            <li><a href="<?= base_url('auth/login') ?>">Login</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
             </ul>
         </nav>
 

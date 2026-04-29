@@ -12,9 +12,10 @@
 --------------------------------------------------------------*/
 /* Fonts */
 :root {
-	--default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto,
-		"Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--default-font:
+		"Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+		Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji",
+		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 	--heading-font: "Raleway", sans-serif;
 	--nav-font: "Poppins", sans-serif;
 }
@@ -1638,5 +1639,5 @@ td.wrap-column {
 
 /* Mencegah scroll merembet ke parent/halaman utama */
 body {
-    overscroll-behavior: contain;
+	overscroll-behavior: contain;
 }

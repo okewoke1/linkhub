@@ -89,4 +89,23 @@ class User_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('master_users', $data);
     }
+
+    public function validate_user_password($user_id, $password)
+    {
+        $this->db->where('id', $user_id);
+        $user = $this->db->get('master_users')->row();
+
+        if ($user && password_verify($password, $user->password)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update_user_password($user_id, $new_password)
+    {
+        $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+        $this->db->where('id', $user_id);
+        return $this->db->update('master_users', ['password' => $hashed_password]);
+    }
 }

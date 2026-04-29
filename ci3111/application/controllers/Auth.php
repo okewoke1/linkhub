@@ -62,7 +62,10 @@ class Auth extends CI_Controller
                         redirect('http://sibukgan.dev.test/user/dashboard', 'refresh');
                     } else {
                         // User does not have access to this app
-                        $this->session->set_flashdata('error', 'Tidak ada akses menuju aplikasi ini.');
+                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Tidak memiliki akses untuk aplikasi ini.<br><u>' . $intended_url . '</u>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
                         redirect(base_url('auth/login'), 'refresh');
                     }
                 } elseif (strpos($intended_url, 'simakand') !== false) {
@@ -74,7 +77,10 @@ class Auth extends CI_Controller
                         redirect('http://simakand.dev.test/operator/dashboard', 'refresh');
                     } else {
                         // User does not have access to this app
-                        $this->session->set_flashdata('error', 'Tidak ada akses menuju aplikasi ini.');
+                        $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Tidak memiliki akses untuk aplikasi ini.<br><u>' . $intended_url . '</u>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
                         redirect(base_url('auth/login'), 'refresh');
                     }
                 } elseif (strpos($intended_url, 'sispek') !== false) {
@@ -94,6 +100,68 @@ class Auth extends CI_Controller
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>');
             redirect(base_url('auth/login'), 'refresh');
+        }
+    }
+
+    public function ganti_password()
+    {
+        $sidebar_data['nama'] = '';
+        $sidebar_data['img_loc'] = 'assets/img/bps-sekadau.png';
+        $sidebar_data['active_menu'] = 'akun';
+
+        if ($this->session->userdata('logged_in')) {
+            $sidebar_data = array(
+                'nama' => $this->session->userdata('nama'),
+                'img_loc' => $this->session->userdata('img_loc'),
+                'active_menu' => 'kelola'
+            );
+        }
+
+        $this->load->view('template/header');
+        $this->load->view('template/sidebar', $sidebar_data);
+        $this->load->view('ganti_password_form');
+        $this->load->view('template/footer');
+    }
+
+    public function handle_ganti_password($user_id)
+    {
+        $password_lama = $this->input->post('password-lama');
+        $password_baru = $this->input->post('password-baru');
+        $konfirmasi_password_baru = $this->input->post('konfirmasi-password-baru');
+
+        // Validasi password baru dan konfirmasi
+        if ($password_baru !== $konfirmasi_password_baru) {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Konfirmasi password baru tidak cocok!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
+            redirect(base_url('auth/ganti_password'), 'refresh');
+            return;
+        }
+
+        // Validasi password lama
+        if (!$this->User_model->validate_user_password($user_id, $password_lama)) {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Password lama salah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
+            redirect(base_url('auth/ganti_password'), 'refresh');
+            return;
+        }
+
+        // Update password baru
+        if ($this->User_model->update_user_password($user_id, $password_baru)) {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                Password berhasil diubah!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
+            redirect(base_url('auth/ganti_password'), 'refresh');
+        } else {
+            $this->session->set_flashdata('pesan', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Terjadi kesalahan saat mengubah password. Silakan coba lagi.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>');
+            redirect(base_url('auth/ganti_password'), 'refresh');
         }
     }
 

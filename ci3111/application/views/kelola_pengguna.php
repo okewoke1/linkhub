@@ -82,8 +82,6 @@
                                         data-jabatan="<?= $item->jabatan ?>"
                                         data-status="<?= $item->status ?>"
                                         data-role="<?= $item->role_ids ?>">Edit</button>
-                                    <!-- data-role="<?= $item->role ?>" -->
-                                    <a href="<?= site_url('kelola/pengguna/delete/' . $item->id) ?>" class="btn btn-sm btn-danger">Hapus</a>
                                 </td>
                             </tr>
                             <?php $i++; ?>

@@ -68,3 +68,4 @@ $route['kelola/pengumuman/edit/(:num)'] = 'kelola/pengumuman_edit/$1';
 $route['kelola/pengumuman/delete/(:num)'] = 'kelola/pengumuman_delete/$1';
 $route['kelola/pengguna/upload'] = 'kelola/pengguna_upload';
 $route['kelola/pengguna/edit/(:num)'] = 'kelola/pengguna_edit/$1';
+$route['auth/ganti_password/(:num)'] = 'auth/handle_ganti_password/$1';
