@@ -20,6 +20,7 @@
                         <li><a href="<?= base_url('umum/umum') ?>">Umum</a></li>
                         <li><a href="<?= base_url('umum/bukti_dukung_skp') ?>">Bukti Dukung SKP</a></li>
                         <li><a href="<?= base_url('umum/ckp_wfh') ?>">CKP WFH</a></li>
+                        <li><a href="<?= base_url('http://sispek.dev.test/dashboard') ?>">Penilaian BerAKHLAK</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="<?= ($active_menu == 'teknis') ? 'active' : '' ?>"><i class="bi bi-hammer navicon"></i> <span>Link Teknis</span> <i
